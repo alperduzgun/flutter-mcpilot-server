@@ -1,0 +1,10 @@
+{
+  "commandId": "test-create-plugin-001",
+  "command": "createFlutterPlugin",
+  "parameters": {
+    "pluginName": "awesome_camera",
+    "pluginType": "federated",
+    "description": "A comprehensive camera plugin for Flutter with advanced features",
+    "platform": "android,ios"
+  }
+}

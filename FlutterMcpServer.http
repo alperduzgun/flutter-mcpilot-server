@@ -1,0 +1,48 @@
+@FlutterMcpServer_HostAddress = http://localhost:5000
+
+### Health Check
+GET {{FlutterMcpServer_HostAddress}}/
+Accept: application/json
+
+### Get Supported Commands
+GET {{FlutterMcpServer_HostAddress}}/api/command/commands
+Accept: application/json
+
+### System Health
+GET {{FlutterMcpServer_HostAddress}}/api/command/health
+Accept: application/json
+
+### Test Flutter Version Check (Dry Run)
+POST {{FlutterMcpServer_HostAddress}}/api/command/execute
+Content-Type: application/json
+
+{
+  "command": "checkFlutterVersion",
+  "params": {},
+  "dryRun": true,
+  "commandId": "test-001",
+  "timestamp": "2025-06-05T23:55:00Z"
+}
+
+### Test Flutter Version Check (Real)
+POST {{FlutterMcpServer_HostAddress}}/api/command/execute
+Content-Type: application/json
+
+{
+  "command": "checkFlutterVersion",
+  "params": {},
+  "dryRun": false,
+  "commandId": "test-002",
+  "timestamp": "2025-06-05T23:55:00Z"
+}
+
+### Test Unsupported Command
+POST {{FlutterMcpServer_HostAddress}}/api/command/execute
+Content-Type: application/json
+
+{
+  "command": "unknownCommand",
+  "params": {},
+  "dryRun": true,
+  "commandId": "test-003"
+}

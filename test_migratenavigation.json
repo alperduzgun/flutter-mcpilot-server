@@ -1,0 +1,7 @@
+{
+  "commandId": "test-migrate-nav-001",
+  "command": "migrateNavigationSystem",
+  "parameters": {
+    "sourceCode": "import 'package:flutter/material.dart';\n\nclass HomePage extends StatelessWidget {\n  @override\n  Widget build(BuildContext context) {\n    return Scaffold(\n      appBar: AppBar(title: Text('Home')),\n      body: Column(\n        children: [\n          ElevatedButton(\n            onPressed: () {\n              Navigator.push(\n                context,\n                MaterialPageRoute(builder: (context) => ProfileScreen()),\n              );\n            },\n            child: Text('Go to Profile'),\n          ),\n          ElevatedButton(\n            onPressed: () {\n              Navigator.pushNamed(context, '/settings');\n            },\n            child: Text('Go to Settings'),\n          ),\n          ElevatedButton(\n            onPressed: () {\n              Navigator.push(\n                context,\n                MaterialPageRoute(builder: (context) => DetailView()),\n              );\n            },\n            child: Text('Go to Detail'),\n          ),\n        ],\n      ),\n    );\n  }\n}"
+  }
+}

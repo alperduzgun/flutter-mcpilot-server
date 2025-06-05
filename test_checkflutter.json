@@ -1,0 +1,7 @@
+{
+  "command": "checkFlutterVersion",
+  "params": {},
+  "dryRun": true,
+  "commandId": "test-001",
+  "timestamp": "2025-06-05T23:55:00Z"
+}

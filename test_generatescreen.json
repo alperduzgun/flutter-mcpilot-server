@@ -1,0 +1,9 @@
+{
+  "commandId": "test-generate-screen-001",
+  "command": "generateScreen",
+  "parameters": {
+    "prompt": "Create a login screen with email input, password input, login button, and forgot password link",
+    "screenName": "LoginScreen",
+    "screenType": "LoginScreen"
+  }
+}

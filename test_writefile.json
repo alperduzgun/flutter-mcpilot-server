@@ -1,0 +1,13 @@
+{
+  "command": "writeFile",
+  "params": {
+    "filePath": "/tmp/test_flutter_widget.dart",
+    "content": "import 'package:flutter/material.dart';\n\nclass TestWidget extends StatelessWidget {\n  const TestWidget({Key? key}) : super(key: key);\n\n  @override\n  Widget build(BuildContext context) {\n    return Container(\n      child: Text('Hello Flutter MCP!'),\n    );\n  }\n}",
+    "createDirectories": true,
+    "overwrite": true,
+    "encoding": "utf-8"
+  },
+  "dryRun": false,
+  "commandId": "test-write-file-001",
+  "timestamp": "2025-06-06T02:00:00Z"
+}

@@ -1,0 +1,7 @@
+{
+  "commandId": "test-generate-001",
+  "command": "generateTestsForCubit",
+  "parameters": {
+    "cubitCode": "import 'package:flutter_bloc/flutter_bloc.dart';\n\nabstract class CounterState {}\n\nclass CounterInitial extends CounterState {}\n\nclass CounterLoading extends CounterState {}\n\nclass CounterLoaded extends CounterState {\n  final int count;\n  CounterLoaded(this.count);\n}\n\nclass CounterError extends CounterState {\n  final String message;\n  CounterError(this.message);\n}\n\nclass CounterCubit extends Cubit<CounterState> {\n  CounterCubit() : super(CounterInitial());\n\n  void increment() {\n    if (state is CounterLoaded) {\n      final currentState = state as CounterLoaded;\n      emit(CounterLoaded(currentState.count + 1));\n    } else {\n      emit(CounterLoaded(1));\n    }\n  }\n\n  void decrement() {\n    if (state is CounterLoaded) {\n      final currentState = state as CounterLoaded;\n      emit(CounterLoaded(currentState.count - 1));\n    } else {\n      emit(CounterLoaded(-1));\n    }\n  }\n\n  Future<void> loadCounter() async {\n    emit(CounterLoading());\n    try {\n      await Future.delayed(Duration(seconds: 1));\n      emit(CounterLoaded(0));\n    } catch (e) {\n      emit(CounterError('Failed to load counter'));\n    }\n  }\n}"
+  }
+}

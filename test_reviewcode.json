@@ -1,0 +1,7 @@
+{
+  "commandId": "test-review-001",
+  "command": "reviewCode",
+  "parameters": {
+    "code": "class MyWidget extends StatefulWidget {\n  @override\n  _MyWidgetState createState() => _MyWidgetState();\n}\n\nclass _MyWidgetState extends State<MyWidget> {\n  @override\n  Widget build(BuildContext context) {\n    return ListView(\n      children: [\n        Text('Hello World'),\n        Text('Another item'),\n        // TODO: Add more items\n      ],\n    );\n  }\n\n  void fetchData() async {\n    try {\n      var response = await http.get(Uri.parse('http://api.example.com/data'));\n      Navigator.pop(context);\n    } catch (e) {\n    }\n  }\n}"
+  }
+}
