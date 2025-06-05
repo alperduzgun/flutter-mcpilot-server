@@ -1,0 +1,4 @@
+{
+  "commandId": "test_complexity_003",
+  "command": "analyzeFeatureComplexity"
+}

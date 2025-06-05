@@ -1,0 +1,9 @@
+{
+  "commandId": "config-test-001",
+  "command": "loadProjectPreferences",
+  "params": {
+    "projectPath": "/Users/alper/Documents/Development/Personal/FlutterMcpServer",
+    "includeDevDependencies": true,
+    "includeLintRules": true
+  }
+}

@@ -52,7 +52,7 @@ filewriter_data='{
   "timestamp": "2025-06-06T02:00:00Z"
 }'
 
-test_endpoint "POST" "http://localhost:5171/api/flutter/command" "$filewriter_data" "FileWriter Service"
+test_endpoint "POST" "http://localhost:5171/api/command/execute" "$filewriter_data" "FileWriter Service"
 
 # Test 3: Check if file was created
 echo "Checking if file was created..."

@@ -22,6 +22,8 @@ public class CommandController : ControllerBase
   private readonly ScreenGeneratorService _screenGeneratorService;
   private readonly PluginCreatorService _pluginCreatorService;
   private readonly FileWriterService _fileWriterService;
+  private readonly ProjectAnalyzer _projectAnalyzer;
+  private readonly ConfigService _configService;
 
   public CommandController(ILogger<CommandController> logger,
                          FlutterVersionChecker flutterVersionChecker,
@@ -30,7 +32,9 @@ public class CommandController : ControllerBase
                          NavigationMigrationService navigationMigrationService,
                          ScreenGeneratorService screenGeneratorService,
                          PluginCreatorService pluginCreatorService,
-                         FileWriterService fileWriterService)
+                         FileWriterService fileWriterService,
+                         ProjectAnalyzer projectAnalyzer,
+                         ConfigService configService)
   {
     _logger = logger;
     _flutterVersionChecker = flutterVersionChecker;
@@ -40,6 +44,8 @@ public class CommandController : ControllerBase
     _screenGeneratorService = screenGeneratorService;
     _pluginCreatorService = pluginCreatorService;
     _fileWriterService = fileWriterService;
+    _projectAnalyzer = projectAnalyzer;
+    _configService = configService;
   }
 
   /// <summary>
@@ -134,7 +140,8 @@ public class CommandController : ControllerBase
             new { Command = "migrateNavigationSystem", Description = "Navigator → GoRouter dönüşümü" },
             new { Command = "generateScreen", Description = "Prompt-to-Widget UI üretimi" },
             new { Command = "createFlutterPlugin", Description = "Plugin/Feature şablonu üretimi" },
-            new { Command = "analyzeFeatureComplexity", Description = "Modül karmaşıklığı analizi" },
+            new { Command = "writeFile", Description = "Güvenli dosya yazma ve oluşturma" },
+            new { Command = "analyzeFeatureComplexity", Description = "Proje karmaşıklığı ve mimari analizi" },
             new { Command = "loadProjectPreferences", Description = "Proje ayarlarını yükleme" }
         };
 
@@ -180,26 +187,12 @@ public class CommandController : ControllerBase
 
   private async Task<McpResponse> HandleAnalyzeComplexity(McpCommand command)
   {
-    // TODO: ProjectAnalyzer service'i ile implement edilecek
-    return await Task.FromResult(new McpResponse
-    {
-      CommandId = command.CommandId,
-      Purpose = "Proje karmaşıklığı analiz edildi",
-      Notes = { "⚠️ Bu handler henüz implement edilmedi" },
-      LearnNotes = { "🧠 Karmaşıklık analizi, refactor zamanını belirler" }
-    });
+    return await _projectAnalyzer.AnalyzeFeatureComplexityAsync(command);
   }
 
   private async Task<McpResponse> HandleLoadPreferences(McpCommand command)
   {
-    // TODO: Config okuma servisi ile implement edilecek
-    return await Task.FromResult(new McpResponse
-    {
-      CommandId = command.CommandId,
-      Purpose = "Proje ayarları yüklendi",
-      Notes = { "⚠️ Bu handler henüz implement edilmedi" },
-      LearnNotes = { "🧠 Proje konfigürasyonu, ekip standartlarını korur" }
-    });
+    return await _configService.LoadProjectPreferencesAsync(command);
   }
 
   private McpResponse HandleUnsupportedCommand(McpCommand command)

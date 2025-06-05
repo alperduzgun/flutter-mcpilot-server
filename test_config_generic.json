@@ -1,0 +1,8 @@
+{
+  "commandId": "config-test-002",
+  "command": "loadProjectPreferences",
+  "params": {
+    "includeDevDependencies": false,
+    "includeLintRules": false
+  }
+}

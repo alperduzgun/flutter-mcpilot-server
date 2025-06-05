@@ -14,6 +14,8 @@ builder.Services.AddScoped<NavigationMigrationService>();
 builder.Services.AddScoped<ScreenGeneratorService>();
 builder.Services.AddScoped<PluginCreatorService>();
 builder.Services.AddScoped<FileWriterService>();
+builder.Services.AddScoped<ProjectAnalyzer>();
+builder.Services.AddScoped<ConfigService>();
 
 // CORS konfigürasyonu (Flutter uygulamaları için)
 builder.Services.AddCors(options =>

@@ -1,0 +1,9 @@
+{
+  "commandId": "test_complexity_001",
+  "command": "analyzeFeatureComplexity",
+  "params": {
+    "projectPath": "/Users/alper/Documents/Development/Personal/FlutterMcpServer",
+    "featureName": "Services",
+    "includeTests": true
+  }
+}
