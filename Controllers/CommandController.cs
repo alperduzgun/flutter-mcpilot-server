@@ -1,8 +1,9 @@
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
+using System.Text.Json;
 using FlutterMcpServer.Models;
 using FlutterMcpServer.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using System.Text.Json;
 
 namespace FlutterMcpServer.Controllers;
 
@@ -12,6 +13,8 @@ namespace FlutterMcpServer.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
+[Produces("application/json")]
+[Tags("Flutter MCP Commands")]
 public class CommandController : ControllerBase
 {
   private readonly ILogger<CommandController> _logger;
@@ -51,9 +54,51 @@ public class CommandController : ControllerBase
   /// <summary>
   /// MCP komutlarını işleyen ana endpoint
   /// </summary>
-  /// <param name="command">MCP komut objesi</param>
-  /// <returns>MCP yanıt objesi</returns>
+  /// <param name="command">MCP komut objesi - JSON formatında gönderilmelidir</param>
+  /// <returns>MCP yanıt objesi - İşlem sonucu, kod blokları, notlar ve öneriler içerir</returns>
+  /// <remarks>
+  /// Bu endpoint tüm Flutter geliştirici yardımcısı komutlarını işler:
+  /// 
+  /// **Kullanılabilir Komutlar:**
+  /// - `checkFlutterVersion`: Flutter SDK sürümünü kontrol eder
+  /// - `reviewCode`: Dart/Flutter kod analizi ve iyileştirme önerileri
+  /// - `generateTestsForCubit`: Cubit/Bloc için test dosyaları üretir
+  /// - `migrateNavigationSystem`: Navigator'dan GoRouter'a geçiş
+  /// - `generateScreen`: Prompt'tan UI widget'ları oluşturur
+  /// - `createFlutterPlugin`: Flutter plugin şablonu üretir
+  /// - `analyzeFeatureComplexity`: Proje karmaşıklık analizi
+  /// - `loadProjectPreferences`: Proje konfigürasyonu yükler
+  /// - `writeFile`: Güvenli dosya yazım işlemleri
+  /// 
+  /// **Örnek İstek:**
+  /// ```json
+  /// {
+  ///   "commandId": "unique-command-id",
+  ///   "command": "checkFlutterVersion",
+  ///   "params": {
+  ///     "projectPath": "/path/to/flutter/project"
+  ///   }
+  /// }
+  /// ```
+  /// 
+  /// **Örnek Yanıt:**
+  /// ```json
+  /// {
+  ///   "success": true,
+  ///   "purpose": "Flutter sürüm kontrolü tamamlandı",
+  ///   "notes": ["Flutter 3.24.0 kullanılıyor"],
+  ///   "commandId": "unique-command-id",
+  ///   "executionTimeMs": 45
+  /// }
+  /// ```
+  /// </remarks>
+  /// <response code="200">Komut başarıyla işlendi</response>
+  /// <response code="400">Geçersiz komut veya parametreler</response>
+  /// <response code="500">Sunucu hatası</response>
   [HttpPost("execute")]
+  [ProducesResponseType<McpResponse>(StatusCodes.Status200OK)]
+  [ProducesResponseType<McpResponse>(StatusCodes.Status400BadRequest)]
+  [ProducesResponseType<McpResponse>(StatusCodes.Status500InternalServerError)]
   public async Task<ActionResult<McpResponse>> ExecuteCommand([FromBody] McpCommand command)
   {
     var stopwatch = Stopwatch.StartNew();
