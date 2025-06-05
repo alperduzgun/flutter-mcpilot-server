@@ -1,5 +1,8 @@
-using FlutterMcpServer.Models;
+using System.Collections.Concurrent;
 using System.Text.Json;
+using FlutterMcpServer.Models;
+using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
 
 namespace FlutterMcpServer.Services;
 
@@ -10,10 +13,17 @@ namespace FlutterMcpServer.Services;
 public class ConfigService
 {
   private readonly ILogger<ConfigService> _logger;
+  private readonly IDeserializer _yamlDeserializer;
+  private readonly ConcurrentDictionary<string, object> _configCache;
 
   public ConfigService(ILogger<ConfigService> logger)
   {
     _logger = logger;
+    _yamlDeserializer = new DeserializerBuilder()
+      .WithNamingConvention(UnderscoredNamingConvention.Instance)
+      .IgnoreUnmatchedProperties()
+      .Build();
+    _configCache = new ConcurrentDictionary<string, object>();
   }
 
   /// <summary>
@@ -41,17 +51,17 @@ public class ConfigService
       if (command.Params.HasValue)
       {
         var paramsElement = command.Params.Value;
-        
+
         if (paramsElement.TryGetProperty("projectPath", out var pathElement))
         {
           projectPath = pathElement.GetString();
         }
-        
+
         if (paramsElement.TryGetProperty("includeDevDependencies", out var devDepsElement))
         {
           includeDevDependencies = devDepsElement.GetBoolean();
         }
-        
+
         if (paramsElement.TryGetProperty("includeLintRules", out var lintElement))
         {
           includeLintRules = lintElement.GetBoolean();
@@ -60,10 +70,10 @@ public class ConfigService
 
       // Proje konfigürasyonunu yükle
       var configResult = await LoadProjectConfiguration(projectPath, includeDevDependencies, includeLintRules);
-      
+
       response.Notes.AddRange(configResult.Messages);
       response.LearnNotes.AddRange(configResult.Insights);
-      
+
       if (configResult.ConfigData.Any())
       {
         response.Notes.Add("📋 Bulunan Konfigürasyonlar:");
@@ -91,60 +101,70 @@ public class ConfigService
   {
     var result = new ConfigurationResult();
 
-    await Task.Run(() =>
+    try
     {
       result.Messages.Add("⚙️ Proje konfigürasyonu yükleniyor");
 
-      // Proje yolu kontrolü
+      // Proje yolu kontrolü ve validation
       if (!string.IsNullOrEmpty(projectPath))
       {
-        if (Directory.Exists(projectPath))
-        {
-          result.Messages.Add($"📁 Proje dizini bulundu: {Path.GetFileName(projectPath)}");
-          
-          // pubspec.yaml analizi
-          var pubspecPath = Path.Combine(projectPath, "pubspec.yaml");
-          if (File.Exists(pubspecPath))
-          {
-            var pubspecConfig = LoadPubspecConfiguration(pubspecPath, includeDevDependencies);
-            result.Messages.AddRange(pubspecConfig.Messages);
-            result.ConfigData.AddRange(pubspecConfig.ConfigData);
-            result.Insights.AddRange(pubspecConfig.Insights);
-          }
-
-          // analysis_options.yaml analizi
-          if (includeLintRules)
-          {
-            var analysisOptionsPath = Path.Combine(projectPath, "analysis_options.yaml");
-            if (File.Exists(analysisOptionsPath))
-            {
-              var lintConfig = LoadLintConfiguration(analysisOptionsPath);
-              result.Messages.AddRange(lintConfig.Messages);
-              result.ConfigData.AddRange(lintConfig.ConfigData);
-            }
-          }
-
-          // .vscode/settings.json analizi (varsa)
-          var vscodeSettingsPath = Path.Combine(projectPath, ".vscode", "settings.json");
-          if (File.Exists(vscodeSettingsPath))
-          {
-            var vscodeConfig = LoadVSCodeConfiguration(vscodeSettingsPath);
-            result.Messages.AddRange(vscodeConfig.Messages);
-            result.ConfigData.AddRange(vscodeConfig.ConfigData);
-          }
-
-          // README.md analizi (varsa)
-          var readmePath = Path.Combine(projectPath, "README.md");
-          if (File.Exists(readmePath))
-          {
-            var readmeConfig = LoadReadmeConfiguration(readmePath);
-            result.Messages.AddRange(readmeConfig.Messages);
-            result.Insights.AddRange(readmeConfig.Insights);
-          }
-        }
-        else
+        if (!Directory.Exists(projectPath))
         {
           result.Messages.Add("❌ Belirtilen proje dizini bulunamadı");
+          return result;
+        }
+
+        // Path traversal saldırılarına karşı güvenlik kontrolü
+        var fullPath = Path.GetFullPath(projectPath);
+        if (!fullPath.StartsWith(Path.GetFullPath(Environment.CurrentDirectory)))
+        {
+          _logger.LogWarning("Güvenlik: Proje yolu current directory dışında: {ProjectPath}", projectPath);
+        }
+
+        result.Messages.Add($"📁 Proje dizini bulundu: {Path.GetFileName(projectPath)}");
+
+        // Paralel dosya işlemleri
+        var tasks = new List<Task<ConfigurationResult>>();
+
+        // pubspec.yaml analizi
+        var pubspecPath = Path.Combine(projectPath, "pubspec.yaml");
+        if (File.Exists(pubspecPath))
+        {
+          tasks.Add(LoadPubspecConfigurationAsync(pubspecPath, includeDevDependencies));
+        }
+
+        // analysis_options.yaml analizi
+        if (includeLintRules)
+        {
+          var analysisOptionsPath = Path.Combine(projectPath, "analysis_options.yaml");
+          if (File.Exists(analysisOptionsPath))
+          {
+            tasks.Add(LoadLintConfigurationAsync(analysisOptionsPath));
+          }
+        }
+
+        // .vscode/settings.json analizi
+        var vscodeSettingsPath = Path.Combine(projectPath, ".vscode", "settings.json");
+        if (File.Exists(vscodeSettingsPath))
+        {
+          tasks.Add(LoadVSCodeConfigurationAsync(vscodeSettingsPath));
+        }
+
+        // README.md analizi
+        var readmePath = Path.Combine(projectPath, "README.md");
+        if (File.Exists(readmePath))
+        {
+          tasks.Add(LoadReadmeConfigurationAsync(readmePath));
+        }
+
+        // Tüm dosya işlemlerini paralel olarak bekle
+        var results = await Task.WhenAll(tasks);
+
+        foreach (var configResult in results)
+        {
+          result.Messages.AddRange(configResult.Messages);
+          result.ConfigData.AddRange(configResult.ConfigData);
+          result.Insights.AddRange(configResult.Insights);
         }
       }
       else
@@ -155,79 +175,124 @@ public class ConfigService
       }
 
       result.Messages.Add("✅ Konfigürasyon yükleme tamamlandı");
-    });
+    }
+    catch (Exception ex)
+    {
+      _logger.LogError(ex, "Konfigürasyon yükleme genel hatası");
+      result.Messages.Add($"❌ Konfigürasyon yükleme hatası: {ex.Message}");
+    }
 
     return result;
   }
 
   /// <summary>
-  /// pubspec.yaml konfigürasyonu yükle
+  /// pubspec.yaml konfigürasyonu yükle (Async)
   /// </summary>
-  private ConfigurationResult LoadPubspecConfiguration(string pubspecPath, bool includeDevDependencies)
+  private async Task<ConfigurationResult> LoadPubspecConfigurationAsync(string pubspecPath, bool includeDevDependencies)
   {
     var result = new ConfigurationResult();
 
     try
     {
-      var content = File.ReadAllText(pubspecPath);
+      // Cache kontrolü
+      var cacheKey = $"pubspec_{pubspecPath}_{includeDevDependencies}";
+      if (_configCache.TryGetValue(cacheKey, out var cachedResult) && cachedResult is ConfigurationResult cached)
+      {
+        _logger.LogDebug("pubspec.yaml cache'den yüklendi: {Path}", pubspecPath);
+        return cached;
+      }
+
+      var content = await File.ReadAllTextAsync(pubspecPath);
       result.Messages.Add("📦 pubspec.yaml konfigürasyonu yüklendi");
 
-      // Temel bilgileri çıkar
-      var lines = content.Split('\n');
-      
-      foreach (var line in lines)
+      // YAML parsing ile proper deserialization
+      try
       {
-        var trimmedLine = line.Trim();
-        
+        var yamlObject = _yamlDeserializer.Deserialize<Dictionary<string, object>>(content);
+
         // Proje adı
-        if (trimmedLine.StartsWith("name:"))
+        if (yamlObject.TryGetValue("name", out var nameObj))
         {
-          var name = trimmedLine.Substring(5).Trim();
-          result.ConfigData.Add($"📝 Proje Adı: {name}");
+          result.ConfigData.Add($"📝 Proje Adı: {nameObj}");
         }
-        
+
         // Sürüm
-        if (trimmedLine.StartsWith("version:"))
+        if (yamlObject.TryGetValue("version", out var versionObj))
         {
-          var version = trimmedLine.Substring(8).Trim();
-          result.ConfigData.Add($"🏷️ Versiyon: {version}");
+          result.ConfigData.Add($"🏷️ Versiyon: {versionObj}");
         }
-        
-        // Flutter SDK
-        if (trimmedLine.StartsWith("sdk:") && line.Contains("flutter"))
+
+        // Environment kontrolü
+        if (yamlObject.TryGetValue("environment", out var envObj) && envObj is Dictionary<object, object> env)
         {
-          var sdkVersion = trimmedLine.Substring(4).Trim().Trim('"');
-          result.ConfigData.Add($"🎯 Flutter SDK: {sdkVersion}");
+          if (env.TryGetValue("flutter", out var flutterVersionObj))
+          {
+            result.ConfigData.Add($"🎯 Flutter SDK: {flutterVersionObj}");
+          }
+          if (env.TryGetValue("sdk", out var sdkVersionObj))
+          {
+            result.ConfigData.Add($"🎯 Dart SDK: {sdkVersionObj}");
+          }
+        }
+
+        // Dependencies analizi
+        if (yamlObject.TryGetValue("dependencies", out var depsObj) && depsObj is Dictionary<object, object> deps)
+        {
+          result.ConfigData.Add($"📚 Ana bağımlılık sayısı: {deps.Count}");
+
+          // Flutter bağımlılık kontrolü
+          if (deps.ContainsKey("flutter"))
+          {
+            result.ConfigData.Add("✅ Flutter framework bağımlılığı mevcut");
+          }
+
+          // Popüler packages kontrolü
+          var popularPackages = new[] { "cupertino_icons", "http", "provider", "bloc", "get_it", "shared_preferences" };
+          var foundPackages = popularPackages.Where(pkg => deps.ContainsKey(pkg)).ToList();
+          if (foundPackages.Any())
+          {
+            result.ConfigData.Add($"🔧 Popüler paketler: {string.Join(", ", foundPackages)}");
+          }
+        }
+
+        // Dev Dependencies analizi
+        if (includeDevDependencies && yamlObject.TryGetValue("dev_dependencies", out var devDepsObj) && devDepsObj is Dictionary<object, object> devDeps)
+        {
+          result.ConfigData.Add($"🔧 Dev bağımlılık sayısı: {devDeps.Count}");
+
+          if (devDeps.ContainsKey("flutter_lints"))
+          {
+            result.ConfigData.Add("✅ flutter_lints mevcut");
+          }
+          if (devDeps.ContainsKey("flutter_test"))
+          {
+            result.ConfigData.Add("✅ flutter_test mevcut");
+          }
         }
       }
-
-      // Bağımlılık sayıları
-      var dependencySection = content.Contains("dependencies:");
-      var devDependencySection = content.Contains("dev_dependencies:");
-      
-      if (dependencySection)
+      catch (Exception yamlEx)
       {
-        var depMatches = System.Text.RegularExpressions.Regex.Matches(content, @"^\s+([a-zA-Z_][a-zA-Z0-9_]*):.*$", System.Text.RegularExpressions.RegexOptions.Multiline);
-        result.ConfigData.Add($"📚 Toplam bağımlılık: {depMatches.Count}");
-      }
-
-      if (devDependencySection && includeDevDependencies)
-      {
-        result.ConfigData.Add("🔧 Dev dependencies mevcut");
+        _logger.LogWarning(yamlEx, "YAML parsing hatası, fallback string parsing kullanılıyor");
+        // Fallback to string parsing
+        LoadPubspecWithStringParsing(content, result, includeDevDependencies);
       }
 
       // Öneriler
       result.Insights.Add("🧠 pubspec.yaml'da bağımlılıkları düzenli olarak güncelleyin");
       result.Insights.Add("🧠 Kullanılmayan bağımlılıkları kaldırın");
-      
+
       if (!content.Contains("flutter_lints"))
       {
         result.Insights.Add("⚠️ flutter_lints eklenmesi önerilir");
       }
 
+      // Cache'e ekle
+      _configCache.TryAdd(cacheKey, result);
+
     }
     catch (Exception ex)
     {
+      _logger.LogError(ex, "pubspec.yaml okuma hatası: {Path}", pubspecPath);
       result.Messages.Add($"❌ pubspec.yaml okuma hatası: {ex.Message}");
     }
 
@@ -235,30 +300,102 @@ public class ConfigService
   }
 
   /// <summary>
-  /// analysis_options.yaml lint konfigürasyonu yükle
+  /// String parsing fallback metodu
   /// </summary>
-  private ConfigurationResult LoadLintConfiguration(string analysisOptionsPath)
+  private void LoadPubspecWithStringParsing(string content, ConfigurationResult result, bool includeDevDependencies)
+  {
+    var lines = content.Split('\n');
+
+    foreach (var line in lines)
+    {
+      var trimmedLine = line.Trim();
+
+      if (trimmedLine.StartsWith("name:"))
+      {
+        var name = trimmedLine.Substring(5).Trim();
+        result.ConfigData.Add($"📝 Proje Adı: {name}");
+      }
+
+      if (trimmedLine.StartsWith("version:"))
+      {
+        var version = trimmedLine.Substring(8).Trim();
+        result.ConfigData.Add($"🏷️ Versiyon: {version}");
+      }
+    }
+
+    var dependencySection = content.Contains("dependencies:");
+    var devDependencySection = content.Contains("dev_dependencies:");
+
+    if (dependencySection)
+    {
+      var depMatches = System.Text.RegularExpressions.Regex.Matches(content, @"^\s+([a-zA-Z_][a-zA-Z0-9_]*):.*$", System.Text.RegularExpressions.RegexOptions.Multiline);
+      result.ConfigData.Add($"📚 Toplam bağımlılık: {depMatches.Count}");
+    }
+
+    if (devDependencySection && includeDevDependencies)
+    {
+      result.ConfigData.Add("🔧 Dev dependencies mevcut");
+    }
+  }
+
+  /// <summary>
+  /// analysis_options.yaml lint konfigürasyonu yükle (Async)
+  /// </summary>
+  private async Task<ConfigurationResult> LoadLintConfigurationAsync(string analysisOptionsPath)
   {
     var result = new ConfigurationResult();
 
     try
     {
-      var content = File.ReadAllText(analysisOptionsPath);
+      var content = await File.ReadAllTextAsync(analysisOptionsPath);
       result.Messages.Add("🔍 analysis_options.yaml lint kuralları yüklendi");
 
-      // Lint kuralı sayısı
-      var ruleCount = System.Text.RegularExpressions.Regex.Matches(content, @"^\s+-\s+\w+", System.Text.RegularExpressions.RegexOptions.Multiline).Count;
-      result.ConfigData.Add($"📋 Aktif lint kuralı: {ruleCount}");
-
-      // Önemli ayarlar
-      if (content.Contains("include: package:flutter_lints"))
+      // YAML parsing ile proper deserialization
+      try
       {
-        result.ConfigData.Add("✅ flutter_lints paketi dahil edilmiş");
+        var yamlObject = _yamlDeserializer.Deserialize<Dictionary<string, object>>(content);
+
+        // Include kontrolü
+        if (yamlObject.TryGetValue("include", out var includeObj))
+        {
+          if (includeObj.ToString()?.Contains("flutter_lints") == true)
+          {
+            result.ConfigData.Add("✅ flutter_lints paketi dahil edilmiş");
+          }
+        }
+
+        // Analyzer kontrolü
+        if (yamlObject.TryGetValue("analyzer", out var analyzerObj))
+        {
+          result.ConfigData.Add("🔧 Analyzer yapılandırması mevcut");
+        }
+
+        // Linter rules kontrolü
+        if (yamlObject.TryGetValue("linter", out var linterObj) && linterObj is Dictionary<object, object> linter)
+        {
+          if (linter.TryGetValue("rules", out var rulesObj) && rulesObj is List<object> rules)
+          {
+            result.ConfigData.Add($"📋 Aktif lint kuralı: {rules.Count}");
+          }
+        }
       }
-
-      if (content.Contains("analyzer:"))
+      catch (Exception yamlEx)
       {
-        result.ConfigData.Add("🔧 Analyzer yapılandırması mevcut");
+        _logger.LogWarning(yamlEx, "YAML parsing hatası, fallback regex parsing kullanılıyor");
+
+        // Fallback: Regex ile kural sayısını hesapla
+        var ruleCount = System.Text.RegularExpressions.Regex.Matches(content, @"^\s+-\s+\w+", System.Text.RegularExpressions.RegexOptions.Multiline).Count;
+        result.ConfigData.Add($"📋 Aktif lint kuralı: {ruleCount}");
+
+        if (content.Contains("include: package:flutter_lints"))
+        {
+          result.ConfigData.Add("✅ flutter_lints paketi dahil edilmiş");
+        }
+
+        if (content.Contains("analyzer:"))
+        {
+          result.ConfigData.Add("🔧 Analyzer yapılandırması mevcut");
+        }
       }
 
       result.Insights.Add("🧠 Lint kuralları kod kalitesini artırır");
@@ -267,6 +404,7 @@ public class ConfigService
     }
     catch (Exception ex)
     {
+      _logger.LogError(ex, "analysis_options.yaml okuma hatası: {Path}", analysisOptionsPath);
       result.Messages.Add($"❌ analysis_options.yaml okuma hatası: {ex.Message}");
     }
 
@@ -274,32 +412,77 @@ public class ConfigService
   }
 
   /// <summary>
-  /// VS Code konfigürasyonu yükle
+  /// VS Code konfigürasyonu yükle (Async)
   /// </summary>
-  private ConfigurationResult LoadVSCodeConfiguration(string vscodeSettingsPath)
+  private async Task<ConfigurationResult> LoadVSCodeConfigurationAsync(string vscodeSettingsPath)
   {
     var result = new ConfigurationResult();
 
     try
     {
-      var content = File.ReadAllText(vscodeSettingsPath);
+      var content = await File.ReadAllTextAsync(vscodeSettingsPath);
       result.Messages.Add("💻 VS Code ayarları yüklendi");
 
-      if (content.Contains("dart."))
+      // JSON parsing ile proper deserialization
+      try
       {
-        result.ConfigData.Add("🎯 Dart/Flutter VS Code ayarları mevcut");
-      }
+        var jsonDoc = JsonDocument.Parse(content);
+        var root = jsonDoc.RootElement;
 
-      if (content.Contains("formatOnSave"))
+        // Dart/Flutter settings kontrolü
+        var dartSettings = new List<string>();
+        foreach (var property in root.EnumerateObject())
+        {
+          if (property.Name.StartsWith("dart."))
+          {
+            dartSettings.Add(property.Name);
+          }
+        }
+
+        if (dartSettings.Any())
+        {
+          result.ConfigData.Add($"🎯 Dart/Flutter VS Code ayarları: {dartSettings.Count} adet");
+
+          // Önemli ayarları kontrol et
+          if (root.TryGetProperty("editor.formatOnSave", out var formatOnSave) && formatOnSave.GetBoolean())
+          {
+            result.ConfigData.Add("✨ Format on save aktif");
+          }
+
+          if (root.TryGetProperty("dart.enableSdkFormatter", out var enableSdkFormatter) && enableSdkFormatter.GetBoolean())
+          {
+            result.ConfigData.Add("🎯 Dart SDK formatter aktif");
+          }
+
+          if (root.TryGetProperty("dart.lineLength", out var lineLength))
+          {
+            result.ConfigData.Add($"📏 Line length: {lineLength.GetInt32()}");
+          }
+        }
+      }
+      catch (JsonException jsonEx)
       {
-        result.ConfigData.Add("✨ Format on save aktif");
+        _logger.LogWarning(jsonEx, "JSON parsing hatası, fallback string parsing kullanılıyor");
+
+        // Fallback: String contains kontrolü
+        if (content.Contains("dart."))
+        {
+          result.ConfigData.Add("🎯 Dart/Flutter VS Code ayarları mevcut");
+        }
+
+        if (content.Contains("formatOnSave"))
+        {
+          result.ConfigData.Add("✨ Format on save ayarı mevcut");
+        }
       }
 
       result.Insights.Add("🧠 IDE ayarları ekip standartlarını korur");
+      result.Insights.Add("🧠 Automated formatting, kod kalitesini artırır");
 
     }
     catch (Exception ex)
     {
+      _logger.LogError(ex, "VS Code ayarları okuma hatası: {Path}", vscodeSettingsPath);
       result.Messages.Add($"❌ VS Code ayarları okuma hatası: {ex.Message}");
     }
 
@@ -307,15 +490,15 @@ public class ConfigService
   }
 
   /// <summary>
-  /// README.md proje dokümantasyonu analizi
+  /// README.md proje dokümantasyonu analizi (Async)
   /// </summary>
-  private ConfigurationResult LoadReadmeConfiguration(string readmePath)
+  private async Task<ConfigurationResult> LoadReadmeConfigurationAsync(string readmePath)
   {
     var result = new ConfigurationResult();
 
     try
     {
-      var content = File.ReadAllText(readmePath);
+      var content = await File.ReadAllTextAsync(readmePath);
       result.Messages.Add("📖 README.md dokümantasyonu bulundu");
 
       var wordCount = content.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length;
@@ -336,6 +519,7 @@ public class ConfigService
     }
     catch (Exception ex)
     {
+      _logger.LogError(ex, "README.md okuma hatası: {Path}", readmePath);
       result.Messages.Add($"❌ README.md okuma hatası: {ex.Message}");
     }
 
@@ -377,7 +561,7 @@ public class ConfigService
   /// <summary>
   /// Konfigürasyon yükleme sonuç modeli
   /// </summary>
-  private class ConfigurationResult
+  public class ConfigurationResult
   {
     public List<string> Messages { get; set; } = new();
     public List<string> ConfigData { get; set; } = new();
