@@ -1,0 +1,11 @@
+{
+  "method": "tools/call",
+  "params": {
+    "name": "checkFlutterVersion",
+    "arguments": {
+      "projectPath": "/Users/alper/Documents/Development/CommerceMinder/mobile-workspace/apps/toptantr_flutter",
+      "validateSdk": true,
+      "checkForUpdates": false
+    }
+  }
+}

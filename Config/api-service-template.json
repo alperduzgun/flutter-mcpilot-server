@@ -1,0 +1,133 @@
+{
+  "apiServiceTemplates": {
+    "basic": {
+      "description": "Basic HTTP API service with Dio",
+      "dependencies": ["dio", "retrofit", "json_annotation"],
+      "devDependencies": ["retrofit_generator", "build_runner", "json_serializable"],
+      "template": {
+        "className": "{ServiceName}Service",
+        "fileName": "{service_name}_service.dart",
+        "baseUrl": "{BASE_URL}",
+        "structure": {
+          "imports": [
+            "import 'package:dio/dio.dart';",
+            "import 'package:retrofit/retrofit.dart';",
+            "import 'package:json_annotation/json_annotation.dart';"
+          ],
+          "parts": [
+            "part '{service_name}_service.g.dart';"
+          ],
+          "classAnnotation": "@RestApi(baseUrl: '{BASE_URL}')",
+          "methods": {
+            "get": "@GET('{endpoint}')",
+            "post": "@POST('{endpoint}')",
+            "put": "@PUT('{endpoint}')",
+            "delete": "@DELETE('{endpoint}')"
+          }
+        }
+      }
+    },
+    "authenticated": {
+      "description": "Authenticated API service with token handling",
+      "dependencies": ["dio", "retrofit", "json_annotation", "shared_preferences"],
+      "devDependencies": ["retrofit_generator", "build_runner", "json_serializable"],
+      "template": {
+        "className": "{ServiceName}ApiService",
+        "fileName": "{service_name}_api_service.dart",
+        "includeInterceptors": true,
+        "authHeaders": true,
+        "tokenRefresh": true,
+        "structure": {
+          "interceptors": [
+            "AuthInterceptor",
+            "LoggingInterceptor",
+            "ErrorInterceptor"
+          ],
+          "methods": {
+            "login": "@POST('/auth/login')",
+            "refresh": "@POST('/auth/refresh')",
+            "logout": "@POST('/auth/logout')"
+          }
+        }
+      }
+    },
+    "graphql": {
+      "description": "GraphQL API service with graphql_flutter",
+      "dependencies": ["graphql_flutter", "json_annotation"],
+      "devDependencies": ["json_serializable", "build_runner"],
+      "template": {
+        "className": "{ServiceName}GraphQLService",
+        "fileName": "{service_name}_graphql_service.dart",
+        "clientSetup": true,
+        "queryTypes": ["Query", "Mutation", "Subscription"],
+        "structure": {
+          "queries": "queries/",
+          "mutations": "mutations/",
+          "subscriptions": "subscriptions/",
+          "fragments": "fragments/"
+        }
+      }
+    },
+    "rest_repository": {
+      "description": "Repository pattern with REST API service",
+      "dependencies": ["dio", "dartz", "equatable"],
+      "template": {
+        "repositoryClass": "{EntityName}Repository",
+        "serviceClass": "{EntityName}ApiService",
+        "structure": {
+          "abstract": "Abstract{EntityName}Repository",
+          "implementation": "{EntityName}RepositoryImpl",
+          "errorHandling": "Either<Failure, T>",
+          "methods": ["create", "read", "update", "delete", "list"]
+        }
+      }
+    }
+  },
+  "codegen": {
+    "buildRunnerCommands": [
+      "flutter packages pub run build_runner build",
+      "flutter packages pub run build_runner build --delete-conflicting-outputs",
+      "flutter packages pub run build_runner watch"
+    ],
+    "retrofitAnnotations": {
+      "GET": "@GET('{path}')",
+      "POST": "@POST('{path}')",
+      "PUT": "@PUT('{path}')",
+      "DELETE": "@DELETE('{path}')",
+      "PATCH": "@PATCH('{path}')",
+      "HEAD": "@HEAD('{path}')",
+      "OPTIONS": "@OPTIONS('{path}')"
+    },
+    "responseTypes": {
+      "single": "Future<{ResponseType}>",
+      "list": "Future<List<{ResponseType}>>",
+      "paginated": "Future<PaginatedResponse<{ResponseType}>>",
+      "void": "Future<void>",
+      "response": "Future<HttpResponse<{ResponseType}>>"
+    }
+  },
+  "errorHandling": {
+    "dioExceptions": [
+      "DioException.connectionTimeout",
+      "DioException.sendTimeout",
+      "DioException.receiveTimeout",
+      "DioException.connectionError",
+      "DioException.badResponse",
+      "DioException.cancel"
+    ],
+    "customExceptions": [
+      "NetworkException",
+      "ServerException",
+      "AuthenticationException",
+      "ValidationException"
+    ]
+  },
+  "testing": {
+    "mockDependencies": ["mockito", "dio_test"],
+    "testTypes": {
+      "unit": "Service method testing",
+      "integration": "API endpoint testing",
+      "mock": "Mock server testing"
+    }
+  }
+}

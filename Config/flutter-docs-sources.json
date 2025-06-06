@@ -1,0 +1,197 @@
+{
+  "flutterDocSources": {
+    "official": {
+      "flutter.dev": {
+        "baseUrl": "https://docs.flutter.dev",
+        "sections": {
+          "getStarted": "/get-started",
+          "development": "/development",
+          "ui": "/development/ui",
+          "data": "/development/data-and-backend",
+          "accessibility": "/development/accessibility-and-localization",
+          "platform": "/development/platform-integration",
+          "packages": "/development/packages-and-plugins",
+          "testing": "/testing",
+          "deployment": "/deployment",
+          "resources": "/resources"
+        },
+        "apis": {
+          "widgets": "/flutter/widgets",
+          "material": "/flutter/material",
+          "cupertino": "/flutter/cupertino",
+          "services": "/flutter/services",
+          "foundation": "/flutter/foundation"
+        }
+      },
+      "api.flutter.dev": {
+        "baseUrl": "https://api.flutter.dev",
+        "dartApi": "/flutter",
+        "searchEndpoint": "/search",
+        "examples": "/examples"
+      },
+      "dart.dev": {
+        "baseUrl": "https://dart.dev",
+        "language": "/language",
+        "libraries": "/libraries",
+        "packages": "/packages",
+        "tools": "/tools"
+      }
+    },
+    "community": {
+      "flutterCommunity": {
+        "github": "https://github.com/fluttercommunity",
+        "awesome": "https://github.com/Solido/awesome-flutter",
+        "samples": "https://github.com/flutter/samples"
+      },
+      "tutorials": {
+        "medium": "https://medium.com/flutter",
+        "youtube": "https://www.youtube.com/c/flutterdev",
+        "udemy": "https://www.udemy.com/topic/flutter/",
+        "coursera": "https://www.coursera.org/courses?query=flutter"
+      }
+    }
+  },
+  "searchCategories": {
+    "widgets": {
+      "description": "Flutter widget documentation and examples",
+      "keywords": ["widget", "ui", "layout", "input", "display"],
+      "priority": 1,
+      "sources": ["flutter.dev/widgets", "api.flutter.dev/flutter/widgets"]
+    },
+    "state_management": {
+      "description": "State management patterns and solutions",
+      "keywords": ["state", "bloc", "cubit", "provider", "riverpod", "getx"],
+      "priority": 2,
+      "sources": ["flutter.dev/development/data-and-backend/state-mgmt"]
+    },
+    "navigation": {
+      "description": "Navigation and routing documentation",
+      "keywords": ["navigation", "routing", "navigator", "go_router"],
+      "priority": 2,
+      "sources": ["flutter.dev/development/ui/navigation"]
+    },
+    "animation": {
+      "description": "Animation and transition documentation",
+      "keywords": ["animation", "transition", "tween", "controller"],
+      "priority": 3,
+      "sources": ["flutter.dev/development/ui/animations"]
+    },
+    "testing": {
+      "description": "Testing documentation and best practices",
+      "keywords": ["test", "testing", "unit", "widget", "integration"],
+      "priority": 2,
+      "sources": ["flutter.dev/testing"]
+    },
+    "platform": {
+      "description": "Platform-specific integration guides",
+      "keywords": ["platform", "android", "ios", "web", "desktop", "plugins"],
+      "priority": 3,
+      "sources": ["flutter.dev/development/platform-integration"]
+    },
+    "performance": {
+      "description": "Performance optimization guides",
+      "keywords": ["performance", "optimization", "memory", "rendering"],
+      "priority": 3,
+      "sources": ["flutter.dev/perf"]
+    }
+  },
+  "quickAccess": {
+    "popularWidgets": [
+      {
+        "name": "Container",
+        "url": "https://api.flutter.dev/flutter/widgets/Container-class.html",
+        "description": "A convenience widget that combines common painting, positioning, and sizing widgets"
+      },
+      {
+        "name": "Column",
+        "url": "https://api.flutter.dev/flutter/widgets/Column-class.html",
+        "description": "A widget that displays its children in a vertical array"
+      },
+      {
+        "name": "Row",
+        "url": "https://api.flutter.dev/flutter/widgets/Row-class.html",
+        "description": "A widget that displays its children in a horizontal array"
+      },
+      {
+        "name": "ListView",
+        "url": "https://api.flutter.dev/flutter/widgets/ListView-class.html",
+        "description": "A scrollable list of widgets arranged linearly"
+      },
+      {
+        "name": "Text",
+        "url": "https://api.flutter.dev/flutter/widgets/Text-class.html",
+        "description": "A run of text with a single style"
+      },
+      {
+        "name": "Image",
+        "url": "https://api.flutter.dev/flutter/widgets/Image-class.html",
+        "description": "A widget that displays an image"
+      },
+      {
+        "name": "AppBar",
+        "url": "https://api.flutter.dev/flutter/material/AppBar-class.html",
+        "description": "A material design app bar"
+      },
+      {
+        "name": "Scaffold",
+        "url": "https://api.flutter.dev/flutter/material/Scaffold-class.html",
+        "description": "A Scaffold provides the high-level structure for a screen"
+      }
+    ],
+    "commonPatterns": [
+      {
+        "name": "State Management",
+        "url": "https://docs.flutter.dev/development/data-and-backend/state-mgmt",
+        "description": "Approaches to managing state in Flutter apps"
+      },
+      {
+        "name": "Navigation Basics",
+        "url": "https://docs.flutter.dev/development/ui/navigation",
+        "description": "How to navigate between screens"
+      },
+      {
+        "name": "Layouts",
+        "url": "https://docs.flutter.dev/development/ui/layout",
+        "description": "How to lay out widgets in Flutter"
+      },
+      {
+        "name": "Handling User Input",
+        "url": "https://docs.flutter.dev/development/ui/interactive",
+        "description": "Making your app interactive"
+      }
+    ]
+  },
+  "searchSettings": {
+    "maxResults": 10,
+    "cacheTimeout": 3600,
+    "includeExamples": true,
+    "includeApi": true,
+    "preferredLanguage": "en",
+    "resultFormat": {
+      "title": true,
+      "description": true,
+      "url": true,
+      "category": true,
+      "relevanceScore": true
+    }
+  },
+  "apiIntegration": {
+    "searchEngines": {
+      "google": {
+        "customSearchEngineId": "flutter_docs_cse",
+        "apiKey": "{GOOGLE_API_KEY}",
+        "site": "site:docs.flutter.dev OR site:api.flutter.dev"
+      },
+      "algolia": {
+        "appId": "flutter_docs",
+        "searchKey": "{ALGOLIA_SEARCH_KEY}",
+        "index": "flutter_documentation"
+      }
+    },
+    "rateLimiting": {
+      "requestsPerMinute": 60,
+      "requestsPerHour": 1000,
+      "burstLimit": 10
+    }
+  }
+}

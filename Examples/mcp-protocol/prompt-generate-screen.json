@@ -1,0 +1,14 @@
+{
+  "method": "prompts/get",
+  "params": {
+    "name": "generate-flutter-screen",
+    "arguments": {
+      "screenName": "UserProfileScreen",
+      "screenType": "stateful",
+      "includeAppBar": true,
+      "includeBottomNav": false,
+      "stateManagement": "cubit",
+      "theme": "material3"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "commandId": "test-review-code-001",
+  "command": "reviewCode",
+  "projectPath": "/tmp/flutter-test-project",
+  "parameters": {
+    "filePath": "lib/main.dart",
+    "reviewType": "comprehensive",
+    "focusAreas": [
+      "performance",
+      "security",
+      "best_practices",
+      "dart_conventions"
+    ],
+    "severity": "all",
+    "includeLineNumbers": true,
+    "generateReport": true
+  }
+}

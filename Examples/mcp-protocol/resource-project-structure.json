@@ -1,0 +1,12 @@
+{
+  "method": "resources/read",
+  "params": {
+    "uri": "flutter://project-structure",
+    "arguments": {
+      "projectPath": "/tmp/flutter-test-project",
+      "includeTests": true,
+      "includeAssets": true,
+      "depth": 3
+    }
+  }
+}

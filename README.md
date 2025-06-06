@@ -34,22 +34,76 @@ It analyzes your architecture, tracks your past preferences, and produces mainta
 
 ## 📦 What It Does / Neler Yapar?
 
-- ✅ Generates Cubit, models, widgets  
-  > Cubit, model ve widget üretir
-- 🧪 blocTest-based unit tests  
-  > blocTest ile test dosyaları oluşturur
-- 🔄 Navigator → GoRouter migration  
-  > Navigation yapısını otomatik dönüştürür
-- 🔍 Code review and refactor suggestions  
-  > Kodunuzu analiz edip iyileştirme önerir
-- 📁 Complexity score for features  
-  > Feature karmaşıklığını puanlar
-- 🧠 Learning notes on every command  
-  > Her komuttan sonra öğretici notlar
-- 📚 SDK & documentation analysis  
-  > Flutter SDK & döküman kontrolü
-- 🧪 dryRun mode for safe previews  
+### 🏗️ **Modular Command Architecture**
+- **7 Specialized Handlers** for different development aspects
+- **Dynamic Command Discovery** with category-based organization
+- **Centralized Error Handling** and command routing
+- **Extensible Design** for easy addition of new command categories
+
+### 🛠️ **Code Generation & Analysis**
+- ✅ **Dart Classes** - JSON serializable, Equatable support
+- ✅ **Cubit Generation** - BLoC pattern with state management
+- ✅ **API Services** - HTTP client with error handling
+- ✅ **Material Design 3 Themes** - Complete theme modules
+- 🧪 **Test Generation** - blocTest-based unit tests
+- 🔍 **Code Review** - Quality analysis and refactor suggestions
+
+### 🔄 **Project Migration & Optimization**
+- 🔄 **Navigator → GoRouter** migration
+- 📁 **Feature Complexity Analysis** - Architecture scoring
+- 🚀 **Plugin Creation** - Flutter plugin boilerplate
+- 📱 **Screen Generation** - Prompt-to-Widget UI creation
+
+### 📚 **Documentation & Package Management**
+- 📚 **Flutter Docs Search** - flutter.dev integration
+- 📦 **pub.dev Package Discovery** - Smart package recommendations
+- 🔍 **Package Analysis** - Compatibility and security checks
+
+### 🛡️ **Development Safety & Learning**
+- 🧪 **dryRun Mode** - Safe previews before execution
+- 🧠 **Educational Notes** - Learn WHY, not just WHAT
+- 📊 **Command Telemetry** - Performance tracking and insights
+- 🔒 **Secure File Operations** - Path traversal protection
+
+### 🌐 **Multiple Interface Support**
+- **REST API** - Traditional HTTP endpoint integration
+- **JSON-RPC 2.0** - AI client compatible protocol
+- **MCP Protocol** - Model Context Protocol compliance  
   > Önizleme moduyla güvenli çalıştırma
+
+---
+
+## 🎯 Available Commands / Mevcut Komutlar
+
+### 🌍 **Environment Commands**
+- `checkFlutterVersion` - Flutter SDK version validation and project compatibility
+
+### 🛠️ **Code Generation Commands**  
+- `generateDartClass` - Create Dart classes with JSON serialization and Equatable
+- `generateCubitBoilerplate` - Generate BLoC pattern Cubit with state management
+- `generateApiService` - Create HTTP API service classes with error handling
+- `generateThemeModule` - Generate Material Design 3 theme modules
+
+### 🔍 **Analysis Commands**
+- `reviewCode` - Comprehensive code quality analysis and refactor suggestions
+- `analyzeFeatureComplexity` - Project architecture and complexity scoring
+
+### 🧪 **Testing Commands**
+- `generateTestsForCubit` - Create blocTest-based unit tests for Cubits
+
+### 📚 **Documentation Commands**
+- `searchFlutterDocs` - Search flutter.dev documentation with category filtering
+
+### 📦 **Package Commands**
+- `searchPubDevPackages` - Discover packages on pub.dev with smart filtering
+- `analyzePackage` - Detailed package analysis with compatibility checks
+
+### 📁 **File System Commands**
+- `writeToFile` - Secure file operations with path traversal protection
+- `migrateNavigationSystem` - Convert Navigator to GoRouter patterns
+- `generateScreen` - Create Flutter screens from natural language prompts
+- `createFlutterPlugin` - Generate Flutter plugin boilerplate
+- `loadProjectPreferences` - Load and analyze project configuration
 
 ---
 
@@ -58,10 +112,36 @@ It analyzes your architecture, tracks your past preferences, and produces mainta
 ```
 flutter-mcp-server/
 ├── Controllers/              # API endpoints / API uçları
-├── Services/                 # Code, test, review services / Servis katmanları
-├── Handlers/                 # Command logic / Komut işleyiciler
+│   └── CommandController.cs  # Simplified with handler manager integration
+├── Services/                 # Code, test, review services / Servis katmanları  
+│   ├── CodeGenerator.cs      # Dart class, Cubit, API service generation
+│   ├── FlutterVersionChecker.cs # SDK version validation
+│   ├── CodeReviewService.cs  # Code quality analysis
+│   ├── FlutterDocService.cs  # flutter.dev documentation search
+│   └── PubDevService.cs      # pub.dev package discovery
+├── Handlers/                 # Modular command handlers / Komut işleyiciler
+│   ├── ICommandHandler.cs    # Base interface for all handlers
+│   ├── CommandHandlerManager.cs # Central command routing
+│   ├── EnvironmentCommandHandler.cs # Flutter SDK operations
+│   ├── CodeGenerationCommandHandler.cs # Code generation commands
+│   ├── AnalysisCommandHandler.cs # Code review and complexity
+│   ├── TestingCommandHandler.cs # Test generation
+│   ├── DocumentationCommandHandler.cs # Flutter docs search
+│   ├── PackageCommandHandler.cs # pub.dev operations
+│   └── FileSystemCommandHandler.cs # File operations and migrations
 ├── Models/                   # Command models / Veri modelleri
-└── Config/                   # Project configs / Proje ayarları
+│   └── McpCommand.cs         # MCP protocol command structure
+├── Config/                   # Configuration templates / Yapılandırma şablonları
+│   ├── mcp-capabilities.json # MCP protocol capabilities
+│   ├── dart-class-template.json # Dart class generation templates
+│   ├── cubit-template.json   # Cubit state management templates
+│   ├── api-service-template.json # API service templates
+│   └── theme-template.json   # Material Design 3 theme templates
+└── Examples/                 # Command examples / Komut örnekleri
+    ├── rest-api/            # REST API examples
+    ├── json-rpc/            # JSON-RPC 2.0 examples
+    ├── mcp-protocol/        # MCP protocol examples
+    └── integration/         # Integration test scenarios
 ```
 
 ---

@@ -1,0 +1,91 @@
+{
+  "testGeneration": {
+    "enabledByDefault": true,
+    "testTypes": {
+      "unitTests": {
+        "enabled": true,
+        "generateForCubits": true,
+        "generateForRepositories": true,
+        "generateForUseCases": true,
+        "generateForModels": true
+      },
+      "widgetTests": {
+        "enabled": true,
+        "generateForScreens": true,
+        "generateForCustomWidgets": true
+      },
+      "integrationTests": {
+        "enabled": false,
+        "generateForFlows": false
+      }
+    },
+    "coverage": {
+      "minimumCoverage": 80,
+      "targetCoverage": 90,
+      "excludeFiles": [
+        "**/*.g.dart",
+        "**/*.freezed.dart",
+        "**/main.dart"
+      ]
+    },
+    "testStructure": {
+      "groupByFeature": true,
+      "separateHelpers": true,
+      "includeMocks": true
+    }
+  },
+  "templates": {
+    "cubitTest": {
+      "fileName": "{{cubitNameSnake}}_cubit_test.dart",
+      "testMethods": [
+        "initial_state_test",
+        "loading_state_test", 
+        "success_state_test",
+        "error_state_test"
+      ]
+    },
+    "repositoryTest": {
+      "fileName": "{{repositoryNameSnake}}_repository_test.dart",
+      "testMethods": [
+        "get_data_success_test",
+        "get_data_failure_test",
+        "cache_data_test"
+      ]
+    },
+    "useCaseTest": {
+      "fileName": "{{useCaseNameSnake}}_usecase_test.dart", 
+      "testMethods": [
+        "call_success_test",
+        "call_failure_test",
+        "invalid_params_test"
+      ]
+    },
+    "widgetTest": {
+      "fileName": "{{widgetNameSnake}}_test.dart",
+      "testMethods": [
+        "renders_correctly_test",
+        "user_interaction_test",
+        "state_changes_test"
+      ]
+    }
+  },
+  "dependencies": {
+    "required": [
+      "flutter_test",
+      "bloc_test",
+      "mocktail"
+    ],
+    "optional": [
+      "golden_toolkit",
+      "patrol",
+      "network_image_mock"
+    ]
+  },
+  "mockGeneration": {
+    "enabledByDefault": true,
+    "generateForRepositories": true,
+    "generateForDataSources": true,
+    "generateForExternalServices": true,
+    "mockFileNaming": "mock_{{className.snake_case}}.dart"
+  }
+}

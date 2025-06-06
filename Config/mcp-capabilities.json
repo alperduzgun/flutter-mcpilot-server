@@ -1,0 +1,357 @@
+{
+  "implementation": {
+    "name": "flutter-mcp-server",
+    "version": "1.0.0"
+  },
+  "capabilities": {
+    "tools": {
+      "listChanged": false
+    },
+    "prompts": {
+      "listChanged": false  
+    },
+    "resources": {
+      "subscribe": true,
+      "listChanged": true
+    },
+    "sampling": {}
+  },
+  "tools": [
+    {
+      "name": "checkFlutterVersion",
+      "description": "Check Flutter SDK version and environment setup",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectPath": {
+            "type": "string",
+            "description": "Path to Flutter project directory"
+          }
+        },
+        "required": ["projectPath"]
+      }
+    },
+    {
+      "name": "reviewCode", 
+      "description": "Review Dart/Flutter code for quality and best practices",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "filePath": {
+            "type": "string",
+            "description": "Path to the Dart file to review"
+          },
+          "codeContent": {
+            "type": "string",
+            "description": "Dart code content to review"
+          }
+        },
+        "required": ["filePath"]
+      }
+    },
+    {
+      "name": "generateDartClass",
+      "description": "Generate Dart class with JSON serialization and Equatable",
+      "inputSchema": {
+        "type": "object", 
+        "properties": {
+          "className": {
+            "type": "string",
+            "description": "Name of the class to generate"
+          },
+          "properties": {
+            "type": "array",
+            "description": "List of class properties",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "type": { "type": "string" },
+                "nullable": { "type": "boolean" }
+              }
+            }
+          },
+          "outputPath": {
+            "type": "string",
+            "description": "Output file path"
+          }
+        },
+        "required": ["className", "properties", "outputPath"]
+      }
+    },
+    {
+      "name": "generateCubitBoilerplate",
+      "description": "Generate Cubit/State boilerplate code",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "cubitName": {
+            "type": "string", 
+            "description": "Name of the Cubit"
+          },
+          "stateProperties": {
+            "type": "array",
+            "description": "State properties"
+          },
+          "outputPath": {
+            "type": "string",
+            "description": "Output directory path"
+          }
+        },
+        "required": ["cubitName", "outputPath"]
+      }
+    },
+    {
+      "name": "generateApiService",
+      "description": "Generate HTTP API service with Dio",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "serviceName": {
+            "type": "string",
+            "description": "Name of the API service"
+          },
+          "endpoints": {
+            "type": "array",
+            "description": "API endpoints to generate"
+          },
+          "outputPath": {
+            "type": "string", 
+            "description": "Output file path"
+          }
+        },
+        "required": ["serviceName", "endpoints", "outputPath"]
+      }
+    },
+    {
+      "name": "generateThemeModule",
+      "description": "Generate Material Design 3 theme module",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "themeName": {
+            "type": "string",
+            "description": "Name of the theme"
+          },
+          "colorScheme": {
+            "type": "object",
+            "description": "Color scheme configuration"
+          },
+          "outputPath": {
+            "type": "string",
+            "description": "Output directory path"
+          }
+        },
+        "required": ["themeName", "outputPath"]
+      }
+    },
+    {
+      "name": "generateTestsForCubit",
+      "description": "Generate unit tests for Cubit/Bloc",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "cubitPath": {
+            "type": "string",
+            "description": "Path to the Cubit file"
+          },
+          "testOutputPath": {
+            "type": "string",
+            "description": "Output path for test file"
+          }
+        },
+        "required": ["cubitPath", "testOutputPath"]
+      }
+    },
+    {
+      "name": "analyzeFeatureComplexity",
+      "description": "Analyze Flutter project complexity and architecture",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectPath": {
+            "type": "string",
+            "description": "Path to Flutter project"
+          },
+          "analysisDepth": {
+            "type": "string",
+            "enum": ["basic", "detailed", "comprehensive"],
+            "description": "Depth of analysis"
+          }
+        },
+        "required": ["projectPath"]
+      }
+    },
+    {
+      "name": "searchFlutterDocs",
+      "description": "Search Flutter documentation",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "searchTerm": {
+            "type": "string",
+            "description": "Term to search for"
+          },
+          "category": {
+            "type": "string",
+            "enum": ["widgets", "animation", "layout", "state", "packages"],
+            "description": "Documentation category"
+          }
+        },
+        "required": ["searchTerm"]
+      }
+    },
+    {
+      "name": "searchPubDevPackages",
+      "description": "Search packages on pub.dev",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "searchTerm": {
+            "type": "string",
+            "description": "Package search term"
+          },
+          "category": {
+            "type": "string",
+            "enum": ["popular", "recent", "favorites"],
+            "description": "Search category"
+          },
+          "includeAnalysis": {
+            "type": "boolean",
+            "description": "Include package analysis"
+          }
+        },
+        "required": ["searchTerm"]
+      }
+    },
+    {
+      "name": "analyzePackage",
+      "description": "Analyze a specific package from pub.dev",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "packageName": {
+            "type": "string",
+            "description": "Name of the package to analyze"
+          }
+        },
+        "required": ["packageName"]
+      }
+    },
+    {
+      "name": "generateScreen",
+      "description": "Generate Flutter screen/widget from description",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "screenName": {
+            "type": "string",
+            "description": "Name of the screen"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the screen UI"
+          },
+          "outputPath": {
+            "type": "string",
+            "description": "Output file path"
+          }
+        },
+        "required": ["screenName", "description", "outputPath"]
+      }
+    }
+  ],
+  "prompts": [
+    {
+      "name": "dart_class_generation",
+      "description": "Generate Dart class with proper structure",
+      "arguments": [
+        {
+          "name": "className",
+          "description": "Name of the class",
+          "required": true
+        },
+        {
+          "name": "features",
+          "description": "Features to include (json, equatable, immutable)",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "flutter_architecture_review",
+      "description": "Review Flutter project architecture",
+      "arguments": [
+        {
+          "name": "projectPath",
+          "description": "Path to Flutter project",
+          "required": true
+        },
+        {
+          "name": "focusAreas",
+          "description": "Specific areas to focus on",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "performance_optimization",
+      "description": "Suggest performance optimizations",
+      "arguments": [
+        {
+          "name": "widgetCode",
+          "description": "Widget code to optimize",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "state_management_guidance",
+      "description": "Provide state management recommendations",
+      "arguments": [
+        {
+          "name": "appComplexity",
+          "description": "App complexity level (simple, medium, complex)",
+          "required": true
+        },
+        {
+          "name": "currentSolution",
+          "description": "Current state management solution",
+          "required": false
+        }
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "uri": "flutter://docs/widgets",
+      "name": "Flutter Widget Catalog",
+      "description": "Complete Flutter widget documentation",
+      "mimeType": "application/json"
+    },
+    {
+      "uri": "flutter://docs/cookbook",
+      "name": "Flutter Cookbook",
+      "description": "Flutter development recipes and examples",
+      "mimeType": "application/json"
+    },
+    {
+      "uri": "flutter://packages/popular",
+      "name": "Popular Flutter Packages",
+      "description": "Most popular packages on pub.dev",
+      "mimeType": "application/json"
+    },
+    {
+      "uri": "flutter://templates/screens",
+      "name": "Screen Templates",
+      "description": "Common Flutter screen templates",
+      "mimeType": "application/json"
+    },
+    {
+      "uri": "flutter://templates/architecture",
+      "name": "Architecture Patterns",
+      "description": "Flutter architecture pattern examples",
+      "mimeType": "application/json"
+    }
+  ]
+}

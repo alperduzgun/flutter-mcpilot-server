@@ -1,0 +1,61 @@
+{
+  "scenario": "Package Discovery and Integration",
+  "description": "Test package search, analysis, and integration workflow",
+  "steps": [
+    {
+      "step": 1,
+      "command": "searchPubDev",
+      "purpose": "Find state management packages",
+      "parameters": {
+        "query": "state management bloc",
+        "categories": ["stateManagement"],
+        "size": 5,
+        "minPubPoints": 120,
+        "platforms": ["android", "ios", "web"]
+      }
+    },
+    {
+      "step": 2,
+      "command": "analyzePackage",
+      "purpose": "Analyze flutter_bloc package",
+      "parameters": {
+        "packageName": "flutter_bloc",
+        "includeVersions": true,
+        "includeDependencies": true,
+        "checkCompatibility": true,
+        "securityScan": true
+      }
+    },
+    {
+      "step": 3,
+      "command": "searchFlutterDocs",
+      "purpose": "Find BLoC pattern documentation",
+      "parameters": {
+        "query": "BLoC pattern state management",
+        "categories": ["state_management"],
+        "includeExamples": true,
+        "maxResults": 3
+      }
+    },
+    {
+      "step": 4,
+      "command": "generateCubit",
+      "purpose": "Generate BLoC-based Cubit",
+      "parameters": {
+        "cubitName": "Counter",
+        "cubitType": "basic",
+        "stateFields": [
+          {"name": "count", "type": "int", "defaultValue": "0"}
+        ],
+        "operations": ["increment", "decrement", "reset"]
+      }
+    }
+  ],
+  "expectedOutcome": "Successfully discover, analyze, and integrate a state management package with generated code",
+  "validationSteps": [
+    "Package search returns relevant results",
+    "Package analysis provides compatibility info",
+    "Documentation search finds helpful resources",
+    "Generated code follows package conventions"
+  ]
+}

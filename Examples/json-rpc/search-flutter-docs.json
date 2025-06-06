@@ -1,0 +1,24 @@
+{
+  "jsonrpc": "2.0",
+  "id": "flutter-docs-search-001",
+  "method": "searchFlutterDocs",
+  "params": {
+    "projectPath": "/tmp/flutter-test-project",
+    "parameters": {
+      "query": "ListView builder performance",
+      "categories": ["widgets", "performance"],
+      "includeExamples": true,
+      "includeApi": true,
+      "maxResults": 5,
+      "sources": ["flutter.dev", "api.flutter.dev"],
+      "resultFormat": {
+        "title": true,
+        "description": true,
+        "url": true,
+        "category": true,
+        "relevanceScore": true,
+        "codeExamples": true
+      }
+    }
+  }
+}

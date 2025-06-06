@@ -1,0 +1,12 @@
+{
+  "jsonrpc": "2.0",
+  "id": "flutter-version-check-001",
+  "method": "checkFlutterVersion",
+  "params": {
+    "projectPath": "/Users/alper/Documents/Development/CommerceMinder/mobile-workspace/apps/toptantr_flutter",
+    "parameters": {
+      "validateSdk": true,
+      "checkForUpdates": false
+    }
+  }
+}

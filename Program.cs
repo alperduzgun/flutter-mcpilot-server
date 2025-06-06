@@ -71,6 +71,16 @@ builder.Services.AddScoped<McpCommandRegistry>();
 builder.Services.AddScoped<McpCapabilitiesService>();
 builder.Services.AddScoped<McpProtocolService>();
 
+// Command Handlers (Step 22 - Modular Architecture)
+builder.Services.AddScoped<FlutterMcpServer.Handlers.ICommandHandler, FlutterMcpServer.Handlers.EnvironmentCommandHandler>();
+builder.Services.AddScoped<FlutterMcpServer.Handlers.ICommandHandler, FlutterMcpServer.Handlers.CodeGenerationCommandHandler>();
+builder.Services.AddScoped<FlutterMcpServer.Handlers.ICommandHandler, FlutterMcpServer.Handlers.AnalysisCommandHandler>();
+builder.Services.AddScoped<FlutterMcpServer.Handlers.ICommandHandler, FlutterMcpServer.Handlers.TestingCommandHandler>();
+builder.Services.AddScoped<FlutterMcpServer.Handlers.ICommandHandler, FlutterMcpServer.Handlers.DocumentationCommandHandler>();
+builder.Services.AddScoped<FlutterMcpServer.Handlers.ICommandHandler, FlutterMcpServer.Handlers.PackageCommandHandler>();
+builder.Services.AddScoped<FlutterMcpServer.Handlers.ICommandHandler, FlutterMcpServer.Handlers.FileSystemCommandHandler>();
+builder.Services.AddScoped<FlutterMcpServer.Handlers.CommandHandlerManager>();
+
 // HTTP Client for external API calls
 builder.Services.AddHttpClient();
 

@@ -1,0 +1,96 @@
+{
+  "templates": {
+    "basicClass": {
+      "name": "Basic Dart Class",
+      "description": "Simple Dart class with properties and constructor",
+      "features": ["constructor", "properties", "toString"],
+      "template": "class {{className}} {\n  {{#properties}}\n  final {{type}} {{name}};\n  {{/properties}}\n\n  const {{className}}({\n    {{#properties}}\n    required this.{{name}},\n    {{/properties}}\n  });\n\n  @override\n  String toString() {\n    return '{{className}}({{#properties}}{{name}}: ${{name}}{{#unless @last}}, {{/unless}}{{/properties}})';\n  }\n}"
+    },
+    "dataClass": {
+      "name": "Data Class with Equatable",
+      "description": "Data class with Equatable for value equality",
+      "features": ["constructor", "properties", "equatable", "toString"],
+      "imports": ["package:equatable/equatable.dart"],
+      "template": "class {{className}} extends Equatable {\n  {{#properties}}\n  final {{type}} {{name}};\n  {{/properties}}\n\n  const {{className}}({\n    {{#properties}}\n    required this.{{name}},\n    {{/properties}}\n  });\n\n  @override\n  List<Object?> get props => [{{#properties}}{{name}}{{#unless @last}}, {{/unless}}{{/properties}}];\n\n  @override\n  String toString() {\n    return '{{className}}({{#properties}}{{name}}: ${{name}}{{#unless @last}}, {{/unless}}{{/properties}})';\n  }\n}"
+    },
+    "jsonSerializableClass": {
+      "name": "JSON Serializable Class",
+      "description": "Class with JSON serialization support",
+      "features": ["constructor", "properties", "json_serialization", "equatable"],
+      "imports": [
+        "package:json_annotation/json_annotation.dart",
+        "package:equatable/equatable.dart"
+      ],
+      "partFiles": ["{{classNameSnake}}.g.dart"],
+      "template": "@JsonSerializable()\nclass {{className}} extends Equatable {\n  {{#properties}}\n  @JsonKey(name: '{{jsonKey}}')\n  final {{type}} {{name}};\n  {{/properties}}\n\n  const {{className}}({\n    {{#properties}}\n    required this.{{name}},\n    {{/properties}}\n  });\n\n  factory {{className}}.fromJson(Map<String, dynamic> json) =>\n      _${{className}}FromJson(json);\n\n  Map<String, dynamic> toJson() => _${{className}}ToJson(this);\n\n  @override\n  List<Object?> get props => [{{#properties}}{{name}}{{#unless @last}}, {{/unless}}{{/properties}}];\n\n  @override\n  String toString() {\n    return '{{className}}({{#properties}}{{name}}: ${{name}}{{#unless @last}}, {{/unless}}{{/properties}})';\n  }\n}"
+    },
+    "freezedClass": {
+      "name": "Freezed Data Class",
+      "description": "Immutable data class using Freezed",
+      "features": ["constructor", "properties", "freezed", "json_serialization"],
+      "imports": [
+        "package:freezed_annotation/freezed_annotation.dart"
+      ],
+      "partFiles": [
+        "{{classNameSnake}}.freezed.dart",
+        "{{classNameSnake}}.g.dart"
+      ],
+      "template": "@freezed\nclass {{className}} with _${{className}} {\n  const factory {{className}}({\n    {{#properties}}\n    {{#if required}}required {{/if}}{{type}} {{name}},\n    {{/properties}}\n  }) = _{{className}};\n\n  factory {{className}}.fromJson(Map<String, dynamic> json) =>\n      _${{className}}FromJson(json);\n}"
+    }
+  },
+  "propertyTypes": {
+    "string": {
+      "dartType": "String",
+      "nullable": false,
+      "defaultValue": "''",
+      "validationRules": ["notEmpty"]
+    },
+    "int": {
+      "dartType": "int", 
+      "nullable": false,
+      "defaultValue": "0",
+      "validationRules": ["positive"]
+    },
+    "double": {
+      "dartType": "double",
+      "nullable": false, 
+      "defaultValue": "0.0",
+      "validationRules": ["positive"]
+    },
+    "bool": {
+      "dartType": "bool",
+      "nullable": false,
+      "defaultValue": "false",
+      "validationRules": []
+    },
+    "datetime": {
+      "dartType": "DateTime",
+      "nullable": false,
+      "defaultValue": "DateTime.now()",
+      "validationRules": []
+    },
+    "list": {
+      "dartType": "List<{{itemType}}>",
+      "nullable": false,
+      "defaultValue": "[]",
+      "validationRules": []
+    },
+    "map": {
+      "dartType": "Map<String, dynamic>",
+      "nullable": false,
+      "defaultValue": "{}",
+      "validationRules": []
+    }
+  },
+  "namingConventions": {
+    "className": "PascalCase",
+    "propertyName": "camelCase",
+    "fileName": "snake_case",
+    "jsonKey": "snake_case"
+  },
+  "buildRunnerCommands": [
+    "dart run build_runner build",
+    "dart run build_runner build --delete-conflicting-outputs",
+    "dart run build_runner watch"
+  ]
+}

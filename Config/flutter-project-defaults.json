@@ -1,0 +1,127 @@
+{
+  "project": {
+    "name": "Flutter Project",
+    "type": "flutter",
+    "sdkConstraints": {
+      "flutter": ">=3.16.0",
+      "dart": ">=3.2.0 <4.0.0"
+    }
+  },
+  "preferences": {
+    "codeStyle": {
+      "lineLength": 80,
+      "useTrailingCommas": true,
+      "sortImports": true,
+      "organizeImports": true
+    },
+    "architecture": {
+      "preferred": "clean_architecture",
+      "stateManagement": "bloc",
+      "dependencyInjection": "get_it",
+      "routing": "go_router"
+    },
+    "testing": {
+      "enableUnitTests": true,
+      "enableWidgetTests": true,
+      "enableIntegrationTests": true,
+      "testCoverage": {
+        "minimum": 80,
+        "target": 90
+      }
+    },
+    "linting": {
+      "enableLinting": true,
+      "strictMode": true,
+      "customRules": []
+    }
+  },
+  "defaultPackages": {
+    "stateManagement": [
+      "flutter_bloc",
+      "bloc",
+      "equatable"
+    ],
+    "networking": [
+      "dio",
+      "connectivity_plus",
+      "internet_connection_checker"
+    ],
+    "storage": [
+      "shared_preferences",
+      "hive",
+      "hive_flutter"
+    ],
+    "ui": [
+      "cached_network_image",
+      "shimmer",
+      "lottie"
+    ],
+    "navigation": [
+      "go_router"
+    ],
+    "dependencyInjection": [
+      "get_it",
+      "injectable"
+    ],
+    "utilities": [
+      "freezed_annotation",
+      "json_annotation",
+      "intl"
+    ],
+    "devDependencies": [
+      "build_runner",
+      "freezed",
+      "json_serializable",
+      "bloc_test",
+      "mocktail"
+    ]
+  },
+  "folderStructure": {
+    "lib": {
+      "core": {
+        "constants": ["strings.dart", "colors.dart", "sizes.dart"],
+        "errors": ["failures.dart", "exceptions.dart"],
+        "network": ["network_info.dart"],
+        "utils": ["utils.dart"]
+      },
+      "features": {
+        "template": {
+          "data": {
+            "datasources": [],
+            "models": [],
+            "repositories": []
+          },
+          "domain": {
+            "entities": [],
+            "repositories": [],
+            "usecases": []
+          },
+          "presentation": {
+            "bloc": [],
+            "pages": [],
+            "widgets": []
+          }
+        }
+      },
+      "shared": {
+        "widgets": [],
+        "theme": ["app_theme.dart"],
+        "extensions": []
+      }
+    },
+    "test": {
+      "features": {},
+      "helpers": ["test_helper.dart"],
+      "mocks": []
+    }
+  },
+  "codeGeneration": {
+    "enableAutoGeneration": true,
+    "templates": {
+      "cubit": "default_cubit_template",
+      "repository": "clean_repository_template", 
+      "usecase": "default_usecase_template",
+      "model": "freezed_model_template"
+    }
+  }
+}

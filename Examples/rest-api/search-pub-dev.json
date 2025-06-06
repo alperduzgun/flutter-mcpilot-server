@@ -1,0 +1,19 @@
+{
+  "commandId": "test-search-pub-dev-001",
+  "command": "searchPubDev",
+  "projectPath": "/tmp/flutter-test-project",
+  "parameters": {
+    "query": "state management",
+    "platforms": ["android", "ios", "web"],
+    "sort": "search_relevance",
+    "size": 10,
+    "minPubPoints": 100,
+    "categories": ["stateManagement"],
+    "includePrerelease": false,
+    "analysisOptions": {
+      "scoreWeights": true,
+      "compatibilityCheck": true,
+      "securityScan": true
+    }
+  }
+}

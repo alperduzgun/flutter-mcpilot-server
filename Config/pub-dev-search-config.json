@@ -1,0 +1,195 @@
+{
+  "pubDevSearchConfig": {
+    "apiEndpoints": {
+      "search": "https://pub.dev/api/search",
+      "packageInfo": "https://pub.dev/api/packages/{package}",
+      "packageScore": "https://pub.dev/api/packages/{package}/score",
+      "packageMetrics": "https://pub.dev/api/packages/{package}/metrics",
+      "packageVersions": "https://pub.dev/api/packages/{package}"
+    },
+    "searchParameters": {
+      "q": "search query",
+      "sort": "search_relevance|top|updated|created|popularity|like_count|pub_points",
+      "page": "page number (1-based)",
+      "size": "results per page (max 100, default 10)",
+      "discontinued": "include discontinued packages (true/false)",
+      "unlisted": "include unlisted packages (true/false)",
+      "platforms": "android,ios,web,windows,macos,linux",
+      "topics": "topic filters",
+      "is": "flutter-favorite,dart3-compatible,null-safe"
+    },
+    "defaultSearchSettings": {
+      "size": 20,
+      "sort": "search_relevance",
+      "discontinued": false,
+      "unlisted": false,
+      "platforms": ["android", "ios", "web"],
+      "includePrerelease": false
+    }
+  },
+  "categories": {
+    "stateManagement": {
+      "keywords": ["bloc", "cubit", "provider", "riverpod", "getx", "redux", "mobx"],
+      "description": "State management solutions for Flutter",
+      "priority": 1
+    },
+    "networking": {
+      "keywords": ["http", "dio", "retrofit", "chopper", "graphql", "socket", "websocket"],
+      "description": "HTTP clients and networking libraries",
+      "priority": 2
+    },
+    "database": {
+      "keywords": ["sqflite", "hive", "isar", "moor", "drift", "firebase", "realm"],
+      "description": "Local and remote database solutions",
+      "priority": 2
+    },
+    "ui": {
+      "keywords": ["animation", "charts", "carousel", "calendar", "picker", "slider"],
+      "description": "UI components and widgets",
+      "priority": 3
+    },
+    "navigation": {
+      "keywords": ["go_router", "auto_route", "fluro", "navigator"],
+      "description": "Navigation and routing solutions",
+      "priority": 2
+    },
+    "utilities": {
+      "keywords": ["utils", "helper", "extension", "tools", "dart"],
+      "description": "Utility libraries and tools",
+      "priority": 4
+    },
+    "testing": {
+      "keywords": ["test", "mockito", "faker", "golden", "integration"],
+      "description": "Testing frameworks and utilities",
+      "priority": 3
+    },
+    "devTools": {
+      "keywords": ["build_runner", "code_generation", "analyzer", "linter"],
+      "description": "Development tools and code generation",
+      "priority": 4
+    },
+    "platform": {
+      "keywords": ["camera", "location", "permissions", "device_info", "package_info"],
+      "description": "Platform-specific integrations",
+      "priority": 3
+    },
+    "firebase": {
+      "keywords": ["firebase", "firestore", "auth", "messaging", "analytics", "crashlytics"],
+      "description": "Firebase integration packages",
+      "priority": 2
+    }
+  },
+  "popularPackages": {
+    "mustHave": [
+      {
+        "name": "provider",
+        "description": "A wrapper around InheritedWidget to make them easier to use and more reusable",
+        "category": "stateManagement",
+        "pubPoints": 140
+      },
+      {
+        "name": "dio",
+        "description": "A powerful HTTP client for Dart, supporting global configuration, interceptors, etc.",
+        "category": "networking",
+        "pubPoints": 140
+      },
+      {
+        "name": "go_router",
+        "description": "A declarative routing solution for Flutter that uses the Router API",
+        "category": "navigation",
+        "pubPoints": 140
+      },
+      {
+        "name": "riverpod",
+        "description": "A simple way to access state while robust and testable",
+        "category": "stateManagement",
+        "pubPoints": 140
+      },
+      {
+        "name": "sqflite",
+        "description": "SQLite plugin for Flutter",
+        "category": "database",
+        "pubPoints": 140
+      }
+    ],
+    "trending": [
+      {
+        "name": "flutter_bloc",
+        "description": "Flutter Widgets that make it easy to implement the BLoC pattern",
+        "category": "stateManagement"
+      },
+      {
+        "name": "hive",
+        "description": "Lightweight and blazing fast key-value database written in pure Dart",
+        "category": "database"
+      },
+      {
+        "name": "freezed",
+        "description": "Code generation for immutable classes that has a simple syntax/API",
+        "category": "devTools"
+      }
+    ]
+  },
+  "searchFilters": {
+    "quality": {
+      "minPubPoints": 100,
+      "minPopularity": 70,
+      "minLikeCount": 50,
+      "nullSafety": true,
+      "dart3Compatible": true
+    },
+    "maintenance": {
+      "maxDaysSinceLastUpdate": 365,
+      "minVersions": 3,
+      "hasDocumentation": true,
+      "hasExample": true
+    },
+    "compatibility": {
+      "flutterVersions": ["3.0.0", "3.3.0", "3.7.0", "3.10.0"],
+      "dartVersions": ["2.17.0", "2.19.0", "3.0.0"],
+      "platforms": ["android", "ios", "web", "windows", "macos", "linux"]
+    }
+  },
+  "analysisSettings": {
+    "scoreWeights": {
+      "pubPoints": 0.4,
+      "popularity": 0.3,
+      "likes": 0.2,
+      "maintenance": 0.1
+    },
+    "redFlags": [
+      "no_documentation",
+      "no_example",
+      "discontinued",
+      "old_dart_version",
+      "security_issues"
+    ],
+    "greenFlags": [
+      "flutter_favorite",
+      "verified_publisher",
+      "null_safe",
+      "dart3_compatible",
+      "recent_update"
+    ]
+  },
+  "caching": {
+    "searchResults": {
+      "ttl": 3600,
+      "maxEntries": 1000
+    },
+    "packageInfo": {
+      "ttl": 7200,
+      "maxEntries": 500
+    },
+    "trending": {
+      "ttl": 86400,
+      "maxEntries": 100
+    }
+  },
+  "rateLimiting": {
+    "requestsPerMinute": 120,
+    "requestsPerHour": 5000,
+    "burstLimit": 20,
+    "backoffStrategy": "exponential"
+  }
+}

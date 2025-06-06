@@ -1,0 +1,9 @@
+{
+  "commandId": "test-flutter-version-001",
+  "command": "checkFlutterVersion",
+  "projectPath": "/Users/alper/Documents/Development/CommerceMinder/mobile-workspace/apps/toptantr_flutter",
+  "parameters": {
+    "validateSdk": true,
+    "checkForUpdates": false
+  }
+}

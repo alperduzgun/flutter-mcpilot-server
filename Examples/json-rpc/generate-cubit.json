@@ -1,0 +1,38 @@
+{
+  "jsonrpc": "2.0",
+  "id": "cubit-generation-001",
+  "method": "generateCubit",
+  "params": {
+    "projectPath": "/tmp/flutter-test-project",
+    "parameters": {
+      "cubitName": "UserProfile",
+      "cubitType": "entity_crud",
+      "entityName": "User",
+      "stateFields": [
+        {
+          "name": "users",
+          "type": "List<User>",
+          "defaultValue": "const []"
+        },
+        {
+          "name": "selectedUser",
+          "type": "User?",
+          "defaultValue": "null"
+        },
+        {
+          "name": "isLoading",
+          "type": "bool",
+          "defaultValue": "false"
+        },
+        {
+          "name": "error",
+          "type": "String?",
+          "defaultValue": "null"
+        }
+      ],
+      "operations": ["create", "read", "update", "delete", "list"],
+      "includeRepository": true,
+      "outputPath": "lib/cubits/user_profile/"
+    }
+  }
+}

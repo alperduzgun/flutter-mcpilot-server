@@ -1,0 +1,45 @@
+{
+  "commandId": "test-generate-dart-class-001",
+  "command": "generateDartClass",
+  "projectPath": "/tmp/flutter-test-project",
+  "parameters": {
+    "className": "UserProfile",
+    "classType": "json_serializable",
+    "fields": [
+      {
+        "name": "id",
+        "type": "String",
+        "isRequired": true,
+        "defaultValue": null
+      },
+      {
+        "name": "name",
+        "type": "String",
+        "isRequired": true,
+        "defaultValue": null
+      },
+      {
+        "name": "email",
+        "type": "String?",
+        "isRequired": false,
+        "defaultValue": null
+      },
+      {
+        "name": "age",
+        "type": "int",
+        "isRequired": false,
+        "defaultValue": "18"
+      },
+      {
+        "name": "isActive",
+        "type": "bool",
+        "isRequired": false,
+        "defaultValue": "true"
+      }
+    ],
+    "generateToJson": true,
+    "generateFromJson": true,
+    "generateEquatable": true,
+    "outputPath": "lib/models/user_profile.dart"
+  }
+}

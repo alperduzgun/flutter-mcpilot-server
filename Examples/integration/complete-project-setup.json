@@ -1,0 +1,106 @@
+{
+  "scenario": "Complete Flutter Project Setup",
+  "description": "End-to-end test for setting up a new Flutter project with architecture",
+  "steps": [
+    {
+      "step": 1,
+      "command": "checkFlutterVersion",
+      "purpose": "Validate Flutter SDK is available",
+      "parameters": {
+        "projectPath": "/tmp/integration-test-project",
+        "validateSdk": true
+      }
+    },
+    {
+      "step": 2,
+      "command": "generateDartClass",
+      "purpose": "Create User model class",
+      "parameters": {
+        "className": "User",
+        "classType": "json_serializable",
+        "fields": [
+          {"name": "id", "type": "String", "isRequired": true},
+          {"name": "name", "type": "String", "isRequired": true},
+          {"name": "email", "type": "String?", "isRequired": false}
+        ],
+        "outputPath": "lib/models/user.dart"
+      }
+    },
+    {
+      "step": 3,
+      "command": "generateCubit",
+      "purpose": "Create UserCubit for state management",
+      "parameters": {
+        "cubitName": "User",
+        "cubitType": "entity_crud",
+        "entityName": "User",
+        "operations": ["create", "read", "update", "delete", "list"],
+        "outputPath": "lib/cubits/user/"
+      }
+    },
+    {
+      "step": 4,
+      "command": "generateApiService",
+      "purpose": "Create API service for User operations",
+      "parameters": {
+        "serviceName": "User",
+        "serviceType": "authenticated",
+        "baseUrl": "https://api.example.com",
+        "endpoints": [
+          {"method": "GET", "path": "/users", "operation": "list"},
+          {"method": "POST", "path": "/users", "operation": "create"},
+          {"method": "GET", "path": "/users/{id}", "operation": "read"},
+          {"method": "PUT", "path": "/users/{id}", "operation": "update"},
+          {"method": "DELETE", "path": "/users/{id}", "operation": "delete"}
+        ],
+        "outputPath": "lib/services/user_api_service.dart"
+      }
+    },
+    {
+      "step": 5,
+      "command": "generateScreen",
+      "purpose": "Create User list screen",
+      "parameters": {
+        "screenName": "UserListScreen",
+        "screenType": "stateful",
+        "stateManagement": "cubit",
+        "includeAppBar": true,
+        "features": ["list", "search", "refresh"],
+        "outputPath": "lib/screens/user_list_screen.dart"
+      }
+    },
+    {
+      "step": 6,
+      "command": "generateTests",
+      "purpose": "Generate comprehensive tests",
+      "parameters": {
+        "testTypes": ["unit", "widget", "integration"],
+        "targets": [
+          "lib/models/user.dart",
+          "lib/cubits/user/",
+          "lib/services/user_api_service.dart",
+          "lib/screens/user_list_screen.dart"
+        ],
+        "outputPath": "test/"
+      }
+    },
+    {
+      "step": 7,
+      "command": "reviewCode",
+      "purpose": "Review generated code quality",
+      "parameters": {
+        "filePath": "lib/",
+        "reviewType": "comprehensive",
+        "focusAreas": ["performance", "best_practices", "dart_conventions"],
+        "generateReport": true
+      }
+    }
+  ],
+  "expectedOutcome": "Complete Flutter project with User management feature including models, state management, API integration, UI screens, and tests",
+  "validationSteps": [
+    "Check all files are generated in correct locations",
+    "Verify code compiles without errors",
+    "Confirm tests pass",
+    "Validate architecture follows Flutter best practices"
+  ]
+}

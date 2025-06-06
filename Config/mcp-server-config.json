@@ -1,0 +1,64 @@
+{
+  "serverInfo": {
+    "name": "Flutter MCP Server",
+    "version": "1.0.0",
+    "description": "AI-Powered .NET MCP Server for Flutter Development Assistant",
+    "protocol": "mcp",
+    "protocolVersion": "1.0.0"
+  },
+  "capabilities": {
+    "tools": {
+      "enabled": true,
+      "maxConcurrentExecutions": 10,
+      "timeout": 300000,
+      "categories": [
+        "environment",
+        "codegen", 
+        "analysis",
+        "testing",
+        "docs",
+        "packages",
+        "filesystem"
+      ]
+    },
+    "prompts": {
+      "enabled": true,
+      "maxPromptLength": 10000,
+      "supportedLanguages": ["dart", "yaml", "json"]
+    },
+    "resources": {
+      "enabled": true,
+      "maxResourceSize": 10485760,
+      "supportedTypes": ["file", "directory", "url"]
+    },
+    "sampling": {
+      "enabled": false
+    }
+  },
+  "configuration": {
+    "logging": {
+      "level": "Information",
+      "enableRequestLogging": true,
+      "enablePerformanceMetrics": true
+    },
+    "security": {
+      "enableApiKey": false,
+      "rateLimiting": {
+        "enabled": true,
+        "requestsPerMinute": 100
+      }
+    },
+    "features": {
+      "enableHotReload": true,
+      "enableCodeGeneration": true,
+      "enableProjectAnalysis": true,
+      "enableTestGeneration": true
+    }
+  },
+  "endpoints": {
+    "jsonRpc": "/api/command/jsonrpc",
+    "capabilities": "/api/command/capabilities", 
+    "registry": "/api/command/registry",
+    "health": "/api/command/health"
+  }
+}
