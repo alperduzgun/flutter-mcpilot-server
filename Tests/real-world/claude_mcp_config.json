@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "flutter-mcp-server": {
+      "command": "curl",
+      "args": [
+        "-X", "POST",
+        "http://localhost:5172/api/command/jsonrpc",
+        "-H", "Content-Type: application/json",
+        "-d", "@-"
+      ],
+      "env": {
+        "MCP_SERVER_URL": "http://localhost:5172",
+        "MCP_SERVER_NAME": "Flutter MCP Server"
+      }
+    }
+  }
+}

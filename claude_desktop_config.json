@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "flutter-mcp-server": {
+      "command": "node",
+      "args": ["/Users/alper/Documents/Development/Personal/FlutterMcpServer/mcp_proxy.js"],
+      "env": {
+        "MCP_SERVER_URL": "http://localhost:5172"
+      }
+    }
+  }
+}

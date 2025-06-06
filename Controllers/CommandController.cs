@@ -249,8 +249,20 @@ public class CommandController : ControllerBase
       // Validate JSON-RPC format
       if (!_mcpProtocolService.ValidateJsonRpcRequest(request, out var errorMessage))
       {
+        // Get request ID for error response
+        string errorRequestId = "null";
+        if (request.TryGetProperty("id", out var errorIdProp))
+        {
+          errorRequestId = errorIdProp.ValueKind switch
+          {
+            JsonValueKind.String => errorIdProp.GetString() ?? "null",
+            JsonValueKind.Number => errorIdProp.GetInt32().ToString(),
+            _ => "null"
+          };
+        }
+
         var errorResponse = _mcpProtocolService.CreateJsonRpcError(
-          request.TryGetProperty("id", out var idProp) ? idProp.GetString() ?? "null" : "null",
+          errorRequestId,
           Services.McpJsonRpcErrorCodes.InvalidRequest,
           errorMessage ?? "Invalid JSON-RPC request format"
         );
@@ -259,7 +271,18 @@ public class CommandController : ControllerBase
 
       // Extract method and check if it's a special MCP method
       var method = request.GetProperty("method").GetString();
-      var requestId = request.TryGetProperty("id", out var id) ? id.GetString() ?? "null" : "null";
+
+      // Handle id field - it could be string, number, or null
+      string requestId = "null";
+      if (request.TryGetProperty("id", out var idProp))
+      {
+        requestId = idProp.ValueKind switch
+        {
+          JsonValueKind.String => idProp.GetString() ?? "null",
+          JsonValueKind.Number => idProp.GetInt32().ToString(),
+          _ => "null"
+        };
+      }
 
       // Handle MCP discovery methods
       if (method == "initialize" || method == "capabilities")
@@ -271,6 +294,72 @@ public class CommandController : ControllerBase
           id = requestId,
           result = capabilities
         });
+      }
+
+      // Handle MCP tools/list method
+      if (method == "tools/list")
+      {
+        // Get capabilities directly from service
+        var capabilities = await _mcpCapabilitiesService.GetCapabilitiesAsync();
+        return Ok(new
+        {
+          jsonrpc = "2.0",
+          id = requestId,
+          result = new { tools = capabilities.Tools }
+        });
+      }
+
+      // Handle MCP tools/call method
+      if (method == "tools/call")
+      {
+        // Extract tool name and arguments from params
+        if (request.TryGetProperty("params", out var paramsElement))
+        {
+          if (paramsElement.TryGetProperty("name", out var nameElement))
+          {
+            var toolName = nameElement.GetString();
+            var arguments = paramsElement.TryGetProperty("arguments", out var argsElement) ? argsElement : (JsonElement?)null;
+
+            // Create MCP command for the tool
+            var toolCommand = new McpCommand
+            {
+              Command = toolName ?? string.Empty,
+              Params = arguments,
+              CommandId = requestId,
+              DryRun = false
+            };
+
+            // Execute the command
+            _logger.LogInformation("MCP Tool çağrıldı: {ToolName} - {RequestId}", toolName, requestId);
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+            var result = await _commandHandlerManager.ExecuteCommandAsync(toolCommand);
+            stopwatch.Stop();
+            _logger.LogInformation("MCP Tool tamamlandı: {ToolName} - {ElapsedMs}ms", toolName, stopwatch.ElapsedMilliseconds);
+
+            // Return tool result in MCP format
+            return Ok(new
+            {
+              jsonrpc = "2.0",
+              id = requestId,
+              result = new
+              {
+                content = new[]
+                {
+                  new
+                  {
+                    type = "text",
+                    text = result.Notes.FirstOrDefault() ?? string.Join("\n", result.CodeBlocks)
+                  }
+                },
+                isError = !result.Success
+              }
+            });
+          }
+        }
+
+        // Invalid tools/call request
+        var toolsCallError = _mcpProtocolService.CreateJsonRpcError(requestId, Services.McpJsonRpcErrorCodes.InvalidParams, "tools/call requires 'name' parameter");
+        return BadRequest(toolsCallError);
       }
 
       // Convert JSON-RPC to internal MCP command

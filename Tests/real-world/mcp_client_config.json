@@ -1,0 +1,74 @@
+{
+  "name": "flutter-mcp-server",
+  "version": "1.0.0",
+  "description": "AI-powered Flutter development assistant with MCP protocol support",
+  "main": "mcp_client_config.json",
+  "scripts": {
+    "test": "echo \"Real-world testing for MCP server\""
+  },
+  "mcp": {
+    "server": {
+      "name": "Flutter MCP Server",
+      "version": "1.0.0",
+      "protocol": "2.0",
+      "endpoints": {
+        "http": "http://localhost:5171/api/command",
+        "jsonrpc": "http://localhost:5171/api/command/jsonrpc",
+        "capabilities": "http://localhost:5171/api/command/capabilities"
+      },
+      "capabilities": {
+        "tools": [
+          "checkFlutterVersion",
+          "generateDartClass", 
+          "generateCubitBoilerplate",
+          "generateApiService",
+          "generateThemeModule",
+          "reviewCode",
+          "analyzeFeatureComplexity",
+          "generateTestsForCubit",
+          "searchFlutterDocs",
+          "searchPubDevPackages",
+          "analyzePackage",
+          "writeToFile",
+          "generateScreen",
+          "createFlutterPlugin",
+          "migrateNavigationSystem",
+          "loadProjectPreferences"
+        ],
+        "prompts": [
+          "generate_dart_class",
+          "create_cubit_boilerplate", 
+          "generate_api_service",
+          "analyze_flutter_project"
+        ],
+        "resources": [
+          "template://dart-class",
+          "template://cubit-boilerplate",
+          "template://api-service",
+          "docs://flutter-best-practices",
+          "config://flutter-project"
+        ]
+      },
+      "features": {
+        "codeGeneration": true,
+        "projectAnalysis": true,
+        "testGeneration": true,
+        "documentationSearch": true,
+        "packageManagement": true,
+        "fileSystemOperations": true,
+        "realTimeValidation": true,
+        "errorHandling": true
+      }
+    }
+  },
+  "keywords": [
+    "flutter",
+    "mcp",
+    "ai-assistant", 
+    "code-generation",
+    "dart",
+    "development-tools"
+  ],
+  "author": "Flutter MCP Server Team",
+  "license": "MIT"
+}

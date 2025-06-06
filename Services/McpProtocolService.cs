@@ -132,7 +132,12 @@ public class McpProtocolService
       {
         Command = method ?? string.Empty,
         Params = hasParams ? paramsElement : null,
-        CommandId = hasId ? idElement.GetString() ?? Guid.NewGuid().ToString() : Guid.NewGuid().ToString(),
+        CommandId = hasId ? (idElement.ValueKind switch
+        {
+          JsonValueKind.String => idElement.GetString() ?? Guid.NewGuid().ToString(),
+          JsonValueKind.Number => idElement.GetInt32().ToString(),
+          _ => Guid.NewGuid().ToString()
+        }) : Guid.NewGuid().ToString(),
         DryRun = false // Default, can be overridden in params
       };
     }
