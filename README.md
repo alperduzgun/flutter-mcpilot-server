@@ -1,4 +1,4 @@
-# 🧠 Flutter MCP Server – AI-Powered Modular Command Processor for Flutter
+# 🧠 Flutter MCPilot (MCP Server) – AI-Powered Modular Command Processor for Flutter
 
 **Flutter MCP Server** is not just another AI code tool.  
 It is a **project-aware**, **modular**, and **educational** backend assistant specifically built for Flutter.
