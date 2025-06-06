@@ -1,0 +1,9 @@
+{
+  "commandId": "test-flutter-docs-001",
+  "command": "searchFlutterDocs",
+  "params": {
+    "searchTerm": "ListView",
+    "category": "widgets"
+  },
+  "dryRun": false
+}

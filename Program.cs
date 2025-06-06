@@ -62,6 +62,10 @@ builder.Services.AddScoped<PluginCreatorService>();
 builder.Services.AddScoped<FileWriterService>();
 builder.Services.AddScoped<ProjectAnalyzer>();
 builder.Services.AddScoped<ConfigService>();
+builder.Services.AddScoped<FlutterDocService>();
+
+// HTTP Client for external API calls
+builder.Services.AddHttpClient();
 
 // CORS konfigürasyonu (Flutter uygulamaları için)
 builder.Services.AddCors(options =>
