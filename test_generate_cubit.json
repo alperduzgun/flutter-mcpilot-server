@@ -1,0 +1,22 @@
+{
+  "command": "generateCubit",
+  "params": {
+    "cubitName": "UserProfile",
+    "stateProperties": [
+      "User? user",
+      "bool isLoading",
+      "String? error",
+      "List<String> recentActions"
+    ],
+    "includeFreezed": true,
+    "includeMethods": [
+      "loadUser",
+      "updateProfile",
+      "resetState"
+    ],
+    "generateTests": true
+  },
+  "dryRun": false,
+  "commandId": "test-generate-cubit-001",
+  "timestamp": "2025-06-06T10:05:00Z"
+}

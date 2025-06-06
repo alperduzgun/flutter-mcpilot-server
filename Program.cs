@@ -64,6 +64,7 @@ builder.Services.AddScoped<ProjectAnalyzer>();
 builder.Services.AddScoped<ConfigService>();
 builder.Services.AddScoped<FlutterDocService>();
 builder.Services.AddScoped<PubDevService>();
+builder.Services.AddScoped<CodeGenerator>();
 
 // HTTP Client for external API calls
 builder.Services.AddHttpClient();
@@ -136,7 +137,11 @@ app.MapGet("/", () => new
         "writeFile",
         "searchFlutterDocs",
         "searchPubDevPackages",
-        "analyzePackage"
+        "analyzePackage",
+        "generateDartClass",
+        "generateCubit",
+        "generateApiService",
+        "generateTheme"
     },
   Timestamp = DateTime.UtcNow,
   Environment = app.Environment.EnvironmentName

@@ -1,0 +1,23 @@
+{
+  "command": "generateDartClass",
+  "params": {
+    "className": "User",
+    "classType": "model",
+    "properties": [
+      "String id",
+      "String name",
+      "String email",
+      "int age",
+      "List<String> hobbies",
+      "DateTime createdAt",
+      "bool isActive"
+    ],
+    "includeJsonSerialization": true,
+    "includeCopyWith": true,
+    "includeEquatable": true,
+    "includeToString": true
+  },
+  "dryRun": false,
+  "commandId": "test-generate-dart-class-001",
+  "timestamp": "2025-06-06T10:00:00Z"
+}

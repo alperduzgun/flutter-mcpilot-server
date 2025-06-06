@@ -28,6 +28,7 @@ public class CommandController : ControllerBase
   private readonly ProjectAnalyzer _projectAnalyzer;
   private readonly ConfigService _configService;
   private readonly PubDevService _pubDevService;
+  private readonly CodeGenerator _codeGenerator;
 
   public CommandController(ILogger<CommandController> logger,
                          FlutterVersionChecker flutterVersionChecker,
@@ -39,7 +40,8 @@ public class CommandController : ControllerBase
                          FileWriterService fileWriterService,
                          ProjectAnalyzer projectAnalyzer,
                          ConfigService configService,
-                         PubDevService pubDevService)
+                         PubDevService pubDevService,
+                         CodeGenerator codeGenerator)
   {
     _logger = logger;
     _flutterVersionChecker = flutterVersionChecker;
@@ -52,6 +54,7 @@ public class CommandController : ControllerBase
     _projectAnalyzer = projectAnalyzer;
     _configService = configService;
     _pubDevService = pubDevService;
+    _codeGenerator = codeGenerator;
   }
 
   /// <summary>
@@ -138,6 +141,10 @@ public class CommandController : ControllerBase
         "searchflutterdocs" => await HandleSearchFlutterDocs(command),
         "searchpubdevpackages" => await HandleSearchPubDevPackages(command),
         "analyzepackage" => await HandleAnalyzePackage(command),
+        "generatedartclass" => await HandleGenerateDartClass(command),
+        "generatecubit" => await HandleGenerateCubit(command),
+        "generateapiservice" => await HandleGenerateApiService(command),
+        "generatetheme" => await HandleGenerateTheme(command),
         _ => HandleUnsupportedCommand(command)
       };
 
@@ -193,7 +200,12 @@ public class CommandController : ControllerBase
             new { Command = "createFlutterPlugin", Description = "Plugin/Feature şablonu üretimi" },
             new { Command = "writeFile", Description = "Güvenli dosya yazma ve oluşturma" },
             new { Command = "analyzeFeatureComplexity", Description = "Proje karmaşıklığı ve mimari analizi" },
-            new { Command = "loadProjectPreferences", Description = "Proje ayarlarını yükleme" }
+            new { Command = "loadProjectPreferences", Description = "Proje ayarlarını yükleme" }, new { Command = "searchFlutterDocs", Description = "Flutter dokümantasyon arama" }, new { Command = "searchPubDevPackages", Description = "pub.dev paket arama" },
+            new { Command = "analyzePackage", Description = "Paket detay analizi" },
+            new { Command = "generateDartClass", Description = "Dart sınıf üretimi (JSON serialization, Equatable)" },
+            new { Command = "generateCubit", Description = "Cubit/State boilerplate üretimi" },
+            new { Command = "generateApiService", Description = "HTTP API servis üretimi" },
+            new { Command = "generateTheme", Description = "Material Design 3 tema modülü üretimi" }
         };
 
     return Ok(commands);
@@ -340,6 +352,26 @@ public class CommandController : ControllerBase
       Notes = { $"🧠 Analyzed package '{packageName}' for quality and compatibility", "📘 Check health score and maintenance status", "⚡ Review security analysis before production use" },
       LearnNotes = { "💡 Package health scores indicate overall quality", "🎯 Always check compatibility with your Flutter version", "⚡ Security analysis helps identify potential vulnerabilities" }
     };
+  }
+
+  private async Task<McpResponse> HandleGenerateDartClass(McpCommand command)
+  {
+    return await _codeGenerator.GenerateDartClassAsync(command);
+  }
+
+  private async Task<McpResponse> HandleGenerateCubit(McpCommand command)
+  {
+    return await _codeGenerator.GenerateCubitBoilerplateAsync(command);
+  }
+
+  private async Task<McpResponse> HandleGenerateApiService(McpCommand command)
+  {
+    return await _codeGenerator.GenerateApiServiceAsync(command);
+  }
+
+  private async Task<McpResponse> HandleGenerateTheme(McpCommand command)
+  {
+    return await _codeGenerator.GenerateThemeModuleAsync(command);
   }
 
   private McpResponse HandleUnsupportedCommand(McpCommand command)

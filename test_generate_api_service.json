@@ -1,0 +1,42 @@
+{
+  "command": "generateApiService",
+  "params": {
+    "serviceName": "UserApiService",
+    "baseUrl": "https://api.example.com/v1",
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/users",
+        "returnType": "List<User>"
+      },
+      {
+        "method": "GET",
+        "path": "/users/{id}",
+        "returnType": "User"
+      },
+      {
+        "method": "POST",
+        "path": "/users",
+        "bodyType": "CreateUserRequest",
+        "returnType": "User"
+      },
+      {
+        "method": "PUT",
+        "path": "/users/{id}",
+        "bodyType": "UpdateUserRequest",
+        "returnType": "User"
+      },
+      {
+        "method": "DELETE",
+        "path": "/users/{id}",
+        "returnType": "void"
+      }
+    ],
+    "includeErrorHandling": true,
+    "includeLogging": true,
+    "includeRetry": true
+  },
+  "dryRun": false,
+  "commandId": "test-generate-api-service-001",
+  "timestamp": "2025-06-06T10:10:00Z"
+}

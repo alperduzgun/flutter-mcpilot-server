@@ -1,0 +1,33 @@
+{
+  "command": "generateTheme",
+  "params": {
+    "themeName": "AppTheme",
+    "colorScheme": "material3",
+    "primaryColor": "#6750A4",
+    "secondaryColor": "#625B71",
+    "supportsDarkMode": true,
+    "includeDynamicColor": true,
+    "customColors": {
+      "success": "#4CAF50",
+      "warning": "#FF9800",
+      "error": "#F44336",
+      "info": "#2196F3"
+    },
+    "typography": {
+      "fontFamily": "Roboto",
+      "includeCustomSizes": true
+    },
+    "includeComponentThemes": true,
+    "components": [
+      "AppBar",
+      "Button",
+      "Card",
+      "TextField",
+      "NavigationBar",
+      "Chip"
+    ]
+  },
+  "dryRun": false,
+  "commandId": "test-generate-theme-001",
+  "timestamp": "2025-06-06T10:15:00Z"
+}
