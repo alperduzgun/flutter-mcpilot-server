@@ -1,0 +1,8 @@
+{
+  "jsonrpc": "2.0",
+  "method": "checkFlutterVersion",
+  "params": {
+    "projectPath": "."
+  },
+  "id": "test-001"
+}

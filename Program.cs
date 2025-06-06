@@ -66,6 +66,11 @@ builder.Services.AddScoped<FlutterDocService>();
 builder.Services.AddScoped<PubDevService>();
 builder.Services.AddScoped<CodeGenerator>();
 
+// MCP Protocol Layer Services
+builder.Services.AddScoped<McpCommandRegistry>();
+builder.Services.AddScoped<McpCapabilitiesService>();
+builder.Services.AddScoped<McpProtocolService>();
+
 // HTTP Client for external API calls
 builder.Services.AddHttpClient();
 
