@@ -125,10 +125,70 @@ MIT Lisansı – Ticari ve bireysel kullanımda ücretsizdir.
 
 ## ✨ Roadmap / Yol Haritası
 
-- [ ] VS Code Extension / VS Code eklentisi  
-- [ ] Dart CLI SDK  
-- [ ] Web Playground  
-- [ ] Customizable Prompt Profiles / Prompt şablonları
+### 🎯 **Phase 1: Core Features Completion**
+
+- [x] ✅ Flutter Version Checker
+- [x] ✅ Code Review & Refactor Service  
+- [x] ✅ Test Generator for Cubits
+- [x] ✅ Navigation Migration (Navigator → GoRouter)
+- [x] ✅ Screen Generator (Prompt-to-Widget)
+- [x] ✅ Flutter Plugin Creator
+- [x] ✅ Project Complexity Analyzer
+- [x] ✅ Config Service with YAML/JSON support
+- [x] ✅ Secure File Writer with dry-run mode
+- [ ] 🔄 FlutterDocService (flutter.dev integration)
+- [ ] 🔄 PubDevService (pub.dev package analysis)
+- [ ] 🔄 MCP Protocol Layer (JSON-RPC 2.0 compliance)
+
+### 🚀 **Phase 2: Advanced AI Integration**
+
+- [ ] 🧠 AI Prompt Resolver Endpoint  
+  > `POST /resolve-prompt` - Natural language to command mapping
+- [ ] 🔍 Command Telemetry Dashboard  
+  > Real-time metrics with Prometheus/Grafana support
+- [ ] 🧩 Dynamic Command Registration  
+  > Plugin architecture for extensible commands
+- [ ] 🔄 Command Undo/Replay API  
+  > `POST /commands/replay` with full command history
+
+### 🛠️ **Phase 3: Developer Experience**
+
+- [ ] 🧪 Enhanced Mock Mode  
+  > Advanced test data injection beyond dry-run
+- [ ] 📁 File System Snapshot API  
+  > Track all MCP-generated file changes
+- [ ] 💬 Natural Language Feedback Collector  
+  > AI learning from user feedback
+- [ ] 🛡️ Command Role Authorization  
+  > Admin/Developer/TestUser role-based access
+
+### 🌐 **Phase 4: Platform Extensions**
+
+- [ ] 🌍 Multilingual Instruction Translator  
+  > `/instructions?lang=tr` for localized AI prompts
+- [ ] 🔌 VS Code Extension  
+  > Direct IDE integration
+- [ ] 📱 Dart CLI SDK  
+  > Command-line interface for CI/CD
+- [ ] 🌐 Web Playground  
+  > Browser-based testing environment
+- [ ] 📝 Customizable Prompt Profiles  
+  > User-defined AI behavior templates
+
+### 📊 **Current Status**
+
+✅ **9/12 Core Services** implemented  
+✅ **REST API** fully functional (port 5171)  
+✅ **Swagger UI** available at `/swagger`  
+⏳ **MCP Protocol** layer in progress  
+📈 **~75% completion** of Phase 1
+
+### 🎯 **Next Milestones**
+
+1. **Complete MCP Protocol Integration** - AI auto-discovery
+2. **Implement FlutterDoc & PubDev Services** - External API integration  
+3. **Launch Telemetry Dashboard** - Production monitoring
+4. **Beta VS Code Extension** - Developer adoption
 
 ---
 
