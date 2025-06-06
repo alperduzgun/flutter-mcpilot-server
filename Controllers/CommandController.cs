@@ -27,6 +27,7 @@ public class CommandController : ControllerBase
   private readonly FileWriterService _fileWriterService;
   private readonly ProjectAnalyzer _projectAnalyzer;
   private readonly ConfigService _configService;
+  private readonly PubDevService _pubDevService;
 
   public CommandController(ILogger<CommandController> logger,
                          FlutterVersionChecker flutterVersionChecker,
@@ -37,7 +38,8 @@ public class CommandController : ControllerBase
                          PluginCreatorService pluginCreatorService,
                          FileWriterService fileWriterService,
                          ProjectAnalyzer projectAnalyzer,
-                         ConfigService configService)
+                         ConfigService configService,
+                         PubDevService pubDevService)
   {
     _logger = logger;
     _flutterVersionChecker = flutterVersionChecker;
@@ -49,6 +51,7 @@ public class CommandController : ControllerBase
     _fileWriterService = fileWriterService;
     _projectAnalyzer = projectAnalyzer;
     _configService = configService;
+    _pubDevService = pubDevService;
   }
 
   /// <summary>
@@ -133,6 +136,8 @@ public class CommandController : ControllerBase
         "analyzefeaturecomplexity" => await HandleAnalyzeComplexity(command),
         "loadprojectpreferences" => await HandleLoadPreferences(command),
         "searchflutterdocs" => await HandleSearchFlutterDocs(command),
+        "searchpubdevpackages" => await HandleSearchPubDevPackages(command),
+        "analyzepackage" => await HandleAnalyzePackage(command),
         _ => HandleUnsupportedCommand(command)
       };
 
@@ -266,6 +271,74 @@ public class CommandController : ControllerBase
       Purpose = $"Flutter documentation search for '{searchTerm}'",
       Notes = { $"🧠 Found documentation for '{searchTerm}' in category '{category}'", "📘 Check multiple categories for comprehensive coverage" },
       LearnNotes = { "💡 Flutter docs are the best source for widget examples", "🎯 Use specific search terms for better results" }
+    };
+  }
+
+  private async Task<McpResponse> HandleSearchPubDevPackages(McpCommand command)
+  {
+    var searchTerm = "";
+    var category = "popular";
+    var includeAnalysis = true;
+
+    if (command.Params.HasValue)
+    {
+      var paramsJson = command.Params.Value;
+      if (paramsJson.TryGetProperty("searchTerm", out var searchTermElement))
+        searchTerm = searchTermElement.GetString() ?? "";
+      if (paramsJson.TryGetProperty("category", out var categoryElement))
+        category = categoryElement.GetString() ?? "popular";
+      if (paramsJson.TryGetProperty("includeAnalysis", out var analysisElement))
+        includeAnalysis = analysisElement.GetBoolean();
+    }
+
+    var result = await _pubDevService.SearchPubDevPackages(searchTerm, category, includeAnalysis);
+
+    return new McpResponse
+    {
+      CommandId = command.CommandId,
+      Success = true,
+      Purpose = $"pub.dev package search for '{searchTerm}' in category '{category}'",
+      CodeBlocks = { new CodeBlock
+        {
+          File = "pubdev_search_results.json",
+          Content = JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true }),
+          Language = "json",
+          Operation = "create"
+        }
+      },
+      Notes = { $"🧠 Found packages for '{searchTerm}' in '{category}' category", "📘 Check package maintenance status and compatibility" },
+      LearnNotes = { "💡 Popular packages often have better community support", "🎯 Consider package size impact on app bundle", "⚡ Always verify package maintenance status" }
+    };
+  }
+
+  private async Task<McpResponse> HandleAnalyzePackage(McpCommand command)
+  {
+    var packageName = "";
+
+    if (command.Params.HasValue)
+    {
+      var paramsJson = command.Params.Value;
+      if (paramsJson.TryGetProperty("packageName", out var packageNameElement))
+        packageName = packageNameElement.GetString() ?? "";
+    }
+
+    var result = await _pubDevService.AnalyzePackage(packageName);
+
+    return new McpResponse
+    {
+      CommandId = command.CommandId,
+      Success = true,
+      Purpose = $"Detailed analysis of package '{packageName}'",
+      CodeBlocks = { new CodeBlock
+        {
+          File = $"package_analysis_{packageName}.json",
+          Content = JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true }),
+          Language = "json",
+          Operation = "create"
+        }
+      },
+      Notes = { $"🧠 Analyzed package '{packageName}' for quality and compatibility", "📘 Check health score and maintenance status", "⚡ Review security analysis before production use" },
+      LearnNotes = { "💡 Package health scores indicate overall quality", "🎯 Always check compatibility with your Flutter version", "⚡ Security analysis helps identify potential vulnerabilities" }
     };
   }
 

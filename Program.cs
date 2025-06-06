@@ -63,6 +63,7 @@ builder.Services.AddScoped<FileWriterService>();
 builder.Services.AddScoped<ProjectAnalyzer>();
 builder.Services.AddScoped<ConfigService>();
 builder.Services.AddScoped<FlutterDocService>();
+builder.Services.AddScoped<PubDevService>();
 
 // HTTP Client for external API calls
 builder.Services.AddHttpClient();
@@ -132,7 +133,10 @@ app.MapGet("/", () => new
         "createFlutterPlugin",
         "analyzeFeatureComplexity",
         "loadProjectPreferences",
-        "writeFile"
+        "writeFile",
+        "searchFlutterDocs",
+        "searchPubDevPackages",
+        "analyzePackage"
     },
   Timestamp = DateTime.UtcNow,
   Environment = app.Environment.EnvironmentName

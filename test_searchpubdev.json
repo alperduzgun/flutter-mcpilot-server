@@ -1,0 +1,10 @@
+{
+  "commandId": "test-pubdev-search-001",
+  "command": "searchPubDevPackages",
+  "params": {
+    "searchTerm": "http",
+    "category": "popular",
+    "includeAnalysis": true
+  },
+  "dryRun": false
+}

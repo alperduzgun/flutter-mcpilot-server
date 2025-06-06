@@ -1,0 +1,8 @@
+{
+  "commandId": "test-package-analysis-001",
+  "command": "analyzePackage",
+  "params": {
+    "packageName": "provider"
+  },
+  "dryRun": false
+}
