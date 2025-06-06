@@ -1,80 +1,72 @@
 # 🧠 Flutter MCP Server – AI-Powered Modular Command Processor for Flutter
 
-**Flutter MCP Server** is not just a Copilot.  
-It’s a project-aware, modular, AI-powered backend that understands your **Flutter architecture**, remembers your past decisions, and helps you build clean, testable, and scalable code — while teaching you why.
+**Flutter MCP Server** is not just another AI code tool.  
+It is a **project-aware**, **modular**, and **educational** backend assistant specifically built for Flutter.
+
+**Flutter MCP Server**, klasik bir Copilot değildir.  
+Projenizi tanır, önceki kararları hatırlar, yeni kararlarınızı ona göre şekillendirir. Kod yazarken size öğretir.
 
 ---
 
-## 🚀 Why Flutter MCP Server? – Beyond Copilot Agent Mode
+## 🚀 Why Flutter MCP Server? / Neden Flutter MCP Server?
 
-While **Copilot Agent** is a powerful assistant for generic code suggestions,  
-**Flutter MCP Server** is **architected for full-project intelligence** — it doesn't just complete code;  
-it **understands your architecture**, **remembers your past choices**, and **shapes future decisions** accordingly.
+While **Copilot Agent** helps complete lines, **Flutter MCP Server** builds complete features.  
+It analyzes your architecture, tracks your past preferences, and produces maintainable output with reasoned explanations.
 
-> ✨ This is not a code copilot.  
-> 🧠 This is an AI **modular command processor**, built for **Flutter-centric thinking** and **project continuity**.
+**Copilot Agent**, satır önerileri sunar.  
+**Flutter MCP Server** ise bütünsel çözümler üretir, proje mimarinizi okur, geçmiş tercihlerinizle gelecek çıktılarınızı optimize eder.
 
 ---
 
 ### 🆚 Copilot Agent vs Flutter MCP Server
 
-| Feature                          | Copilot Agent         | Flutter MCP Server                            |
-|----------------------------------|------------------------|------------------------------------------------|
-| Inline Code Suggestion           | ✅                     | 🚫 Not suggestion-based                        |
-| Modular Command Protocol         | ❌                     | ✅ Clean, extensible handler structure         |
-| Knows Project Architecture       | ❌                     | ✅ Understands layers, services, UI, state     |
-| Remembers Past Decisions         | ❌                     | ✅ Learns from command logs                    |
-| Guides Future Code Consistency   | ❌                     | ✅ Decision-aware evolution                    |
-| SDK & Doc Integration            | ❌                     | ✅ Uses Flutter SDK & flutter.dev              |
-| Navigation Refactor              | ❌                     | ✅ GoRouter conversion with reasoning          |
-| blocTest Test Generator          | ❌                     | ✅ Modular and clean unit tests                |
-| Inline Learning Notes            | ❌                     | ✅ 🧠 Learns with you, not just for you         |
-| Dry Run Mode + Project Logs      | ❌                     | ✅ Previews, logs, and complexity scoring      |
+| Feature / Özellik                      | Copilot Agent         | Flutter MCP Server                            |
+|---------------------------------------|------------------------|------------------------------------------------|
+| Inline code suggestion / Kod tahmini  | ✅                     | 🚫 Not suggestion-based                        |
+| Modular command processor             | ❌                     | ✅ Clean handler-driven architecture           |
+| Project memory / Geçmiş karar analizi | ❌                     | ✅ Learns from history                         |
+| SDK & docs integration                | ❌                     | ✅ Flutter SDK + flutter.dev analysis          |
+| Test & refactor tools                 | ❌                     | ✅ blocTest, GoRouter migration, complexity    |
+| Educational notes / Öğretici notlar   | ❌                     | ✅ Explains WHY, not just WHAT                 |
+| dryRun & logging                      | ❌                     | ✅ Secure previews + logging                   |
 
 ---
 
-## 🚀 Türkçe: Projeyi Tanır, Geçmişe Bakar, Geleceğe Karar Verir
+## 📦 What It Does / Neler Yapar?
 
-Copilot Agent sadece satır bazlı öneriler sunar.  
-Ama **Flutter MCP Server**, projenizi bir bütün olarak algılar:
-
-- ✅ Geçmişte yazdığınız handler'lara, modüllere, test yapılarına bakar  
-- ✅ Yeni komutlarda önceki tercihlerinizi dikkate alır  
-- ✅ Tutarlı, uyumlu ve sürdürülebilir kod üretir  
-- ✅ Her çıktının "neden" öyle üretildiğini size anlatır
-
-> 🧠 Bu bir yazım asistanı değil, proje stratejisti.  
-> 📘 Kod geçmişinizi inceler, gelecek kararlarını bu temelde verir.
-
----
-
-## 📦 What It Does
-
-- ✅ Generates Cubit, model, and widget code  
-- 🧪 Produces blocTest tests  
-- 🔄 Refactors Navigator → GoRouter  
-- 🔍 Reviews code & gives improvement tips  
-- 📁 Analyzes feature modularity  
-- 🧠 Drops learning notes with each command  
-- 📚 Reads Flutter SDK & flutter.dev docs  
-- 🧪 Supports dryRun mode
+- ✅ Generates Cubit, models, widgets  
+  > Cubit, model ve widget üretir
+- 🧪 blocTest-based unit tests  
+  > blocTest ile test dosyaları oluşturur
+- 🔄 Navigator → GoRouter migration  
+  > Navigation yapısını otomatik dönüştürür
+- 🔍 Code review and refactor suggestions  
+  > Kodunuzu analiz edip iyileştirme önerir
+- 📁 Complexity score for features  
+  > Feature karmaşıklığını puanlar
+- 🧠 Learning notes on every command  
+  > Her komuttan sonra öğretici notlar
+- 📚 SDK & documentation analysis  
+  > Flutter SDK & döküman kontrolü
+- 🧪 dryRun mode for safe previews  
+  > Önizleme moduyla güvenli çalıştırma
 
 ---
 
-## 📦 Architecture / Yapı
+## 📂 Project Structure / Proje Yapısı
 
 ```
 flutter-mcp-server/
-├── Controllers/              # API endpoint'leri
-├── Services/                 # Kod/Test üretici, review servisleri
-├── Handlers/                # Her komutun karşılığı olan handler'lar
-├── Models/                   # MCP komut modelleri
-└── Config/                   # flutter_config.json gibi ayarlar
+├── Controllers/              # API endpoints / API uçları
+├── Services/                 # Code, test, review services / Servis katmanları
+├── Handlers/                 # Command logic / Komut işleyiciler
+├── Models/                   # Command models / Veri modelleri
+└── Config/                   # Project configs / Proje ayarları
 ```
 
 ---
 
-## ✅ Local Setup / Kurulum
+## ✅ Getting Started / Başlarken
 
 ```bash
 git clone https://github.com/your-org/flutter-mcp-server.git
@@ -82,11 +74,12 @@ cd flutter-mcp-server
 dotnet run
 ```
 
-> Requires .NET 7+ and a Flutter project to target.
+> Requires .NET 7+  
+> .NET 7+ gerektirir
 
 ---
 
-## 🧪 Dry Run Mode – Safe Preview
+## 🧪 Dry Run Example / Dry Run Örneği
 
 ```json
 {
@@ -98,40 +91,58 @@ dotnet run
 }
 ```
 
-> No file is written. You get a preview JSON with notes.
+You’ll get a safe preview without writing files.  
+> Dosyaya yazmadan örnek çıktı alırsınız.
 
 ---
 
-## 🧠 Developer Insights – Learn as You Code
+## 🧠 Learn as You Build / Kodlarken Öğren
 
-Flutter MCP Server teaches you **why** it makes each change:
-
-> 🧠 `copyWith()` improves immutability in state updates.  
-> 📘 Learn this for safer state transitions in Flutter Cubits.
+> 🧠 `copyWith()` improves state immutability.  
+> 📘 `copyWith()` kullanmak, Cubit güncellemelerinde daha güvenli geçiş sağlar.
 
 ---
 
-## 📈 Logs & Metrics
+## 📈 Logs & Telemetry / Loglama ve Telemetri
 
-Every execution is logged in `project_log.txt`. You’ll see:
+Each execution is saved to `project_log.txt`.  
+Tüm komutlar `project_log.txt` içinde kayıtlı tutulur:
 
-- ⏱️ Estimated Time Saved  
-- 🎯 Style Consistency Score  
-- 📘 AI Learn Notes  
-- ⚠️ Complexity Warnings  
-- 🔍 Code Smell Suggestions
-
----
-
-## 📄 License
-
-MIT License – Free for commercial and educational use.
+- ⏱️ Estimated Time Saved / Zaman tasarrufu  
+- 🎯 Style Score / Stil uyum puanı  
+- 📘 Learning Notes / Öğrenme notları  
+- ⚠️ Complexity Score / Karmaşıklık analizi  
+- 🔍 Code Review Hints / Kod kokusu uyarıları
 
 ---
 
-## ✨ Roadmap
+## 📄 License / Lisans
 
-- [ ] VS Code extension  
-- [ ] Dart SDK / CLI client  
-- [ ] Web playground  
-- [ ] Custom prompt templating
+MIT License – Free to use for commercial and personal projects.  
+MIT Lisansı – Ticari ve bireysel kullanımda ücretsizdir.
+
+---
+
+## ✨ Roadmap / Yol Haritası
+
+- [ ] VS Code Extension / VS Code eklentisi  
+- [ ] Dart CLI SDK  
+- [ ] Web Playground  
+- [ ] Customizable Prompt Profiles / Prompt şablonları
+
+---
+
+## 🙌 Contributing / Katkı Sağlayın
+
+Pull requests are welcome. For major changes, please open an issue.  
+Pull request gönderebilirsiniz. Büyük değişiklikler için issue açmanız yeterli.
+
+---
+
+## 🔍 Keywords / Anahtar Kelimeler
+
+`flutter mcp`, `ai codegen`, `flutter bloc test`, `navigation refactor`, `flutter sdk analyzer`, `project-aware ai`, `command processor`, `code generator flutter`
+
+---
+
+🚀 Powered by .NET • Designed for Flutter • Built to Teach
