@@ -1,34 +1,67 @@
 # 🧠 Flutter MCP Server – AI-Powered Modular Command Processor for Flutter
 
-**Flutter MCP Server** is a modular, .NET-based AI assistant that automates and enhances your Flutter development process.  
-From generating Cubit tests to navigation refactors and code review – all handled intelligently with powerful commands.
-
-> 🚀 Boost your productivity. ✨ Learn with every AI output. 📦 Keep your Flutter codebase clean and modular.
+**Flutter MCP Server** is not just a Copilot.  
+It’s a project-aware, modular, AI-powered backend that understands your **Flutter architecture**, remembers your past decisions, and helps you build clean, testable, and scalable code — while teaching you why.
 
 ---
 
-## 🚀 Features / Özellikler
+## 🚀 Why Flutter MCP Server? – Beyond Copilot Agent Mode
 
-- ✅ **AI-powered Code Generation** (Cubit, Widget, Service, Model)  
-  > Flutter için AI destekli Cubit, Widget, Model ve Servis üretimi
-- 🧪 **blocTest-based Test Generation**  
-  > blocTest desteğiyle otomatik test üretimi
-- 🔍 **AI Code Review and Refactor Suggestions**  
-  > Kod incelenir ve refactor önerileri sunulur
-- 🔄 **Navigation Refactor** (Navigator → GoRouter)  
-  > Navigation yapısı otomatik olarak GoRouter'a dönüştürülür
-- 📦 **Flutter.dev & Pub.dev Search**  
-  > AI destekli dokümantasyon ve paket araştırması
-- 📁 **Feature Complexity Analysis**  
-  > Özellik modülü karmaşıklık puanı (0–100)
-- 🧠 **Learning Cards & AI Notes**  
-  > Öğretici açıklamalar her komutun sonunda
-- 🧪 **Dry-Run Support**  
-  > Dosyaya yazmadan sonucu önizleme
+While **Copilot Agent** is a powerful assistant for generic code suggestions,  
+**Flutter MCP Server** is **architected for full-project intelligence** — it doesn't just complete code;  
+it **understands your architecture**, **remembers your past choices**, and **shapes future decisions** accordingly.
+
+> ✨ This is not a code copilot.  
+> 🧠 This is an AI **modular command processor**, built for **Flutter-centric thinking** and **project continuity**.
 
 ---
 
-## 📦 Project Structure / Proje Yapısı
+### 🆚 Copilot Agent vs Flutter MCP Server
+
+| Feature                          | Copilot Agent         | Flutter MCP Server                            |
+|----------------------------------|------------------------|------------------------------------------------|
+| Inline Code Suggestion           | ✅                     | 🚫 Not suggestion-based                        |
+| Modular Command Protocol         | ❌                     | ✅ Clean, extensible handler structure         |
+| Knows Project Architecture       | ❌                     | ✅ Understands layers, services, UI, state     |
+| Remembers Past Decisions         | ❌                     | ✅ Learns from command logs                    |
+| Guides Future Code Consistency   | ❌                     | ✅ Decision-aware evolution                    |
+| SDK & Doc Integration            | ❌                     | ✅ Uses Flutter SDK & flutter.dev              |
+| Navigation Refactor              | ❌                     | ✅ GoRouter conversion with reasoning          |
+| blocTest Test Generator          | ❌                     | ✅ Modular and clean unit tests                |
+| Inline Learning Notes            | ❌                     | ✅ 🧠 Learns with you, not just for you         |
+| Dry Run Mode + Project Logs      | ❌                     | ✅ Previews, logs, and complexity scoring      |
+
+---
+
+## 🚀 Türkçe: Projeyi Tanır, Geçmişe Bakar, Geleceğe Karar Verir
+
+Copilot Agent sadece satır bazlı öneriler sunar.  
+Ama **Flutter MCP Server**, projenizi bir bütün olarak algılar:
+
+- ✅ Geçmişte yazdığınız handler'lara, modüllere, test yapılarına bakar  
+- ✅ Yeni komutlarda önceki tercihlerinizi dikkate alır  
+- ✅ Tutarlı, uyumlu ve sürdürülebilir kod üretir  
+- ✅ Her çıktının "neden" öyle üretildiğini size anlatır
+
+> 🧠 Bu bir yazım asistanı değil, proje stratejisti.  
+> 📘 Kod geçmişinizi inceler, gelecek kararlarını bu temelde verir.
+
+---
+
+## 📦 What It Does
+
+- ✅ Generates Cubit, model, and widget code  
+- 🧪 Produces blocTest tests  
+- 🔄 Refactors Navigator → GoRouter  
+- 🔍 Reviews code & gives improvement tips  
+- 📁 Analyzes feature modularity  
+- 🧠 Drops learning notes with each command  
+- 📚 Reads Flutter SDK & flutter.dev docs  
+- 🧪 Supports dryRun mode
+
+---
+
+## 📦 Architecture / Yapı
 
 ```
 flutter-mcp-server/
@@ -38,20 +71,6 @@ flutter-mcp-server/
 ├── Models/                   # MCP komut modelleri
 └── Config/                   # flutter_config.json gibi ayarlar
 ```
-
----
-
-## 🧩 Supported MCP Commands / Desteklenen Komutlar
-
-| Command                     | Description                                        | Açıklama                                          |
-|----------------------------|----------------------------------------------------|---------------------------------------------------|
-| `checkFlutterVersion`      | Validates Flutter SDK compatibility                | Flutter sürüm kontrolü yapar                      |
-| `reviewCode`               | Performs AI-based static analysis                  | Kodunuzu analiz eder ve geliştirici notlar sunar  |
-| `generateTestsForCubit`    | blocTest tabanlı Cubit test dosyası üretir        | Otomatik test üretimi                             |
-| `migrateNavigationSystem`  | Converts Navigator routes to GoRouter              | Navigation sistemini dönüştürür                   |
-| `generateScreen`           | Prompt'tan ekran üretir                            | UI widget oluşturur                               |
-| `createFlutterPlugin`      | Plugin yapısı için başlangıç şablonu               | Flutter plugin temeli sunar                       |
-| `analyzeFeatureComplexity` | Modül karmaşıklığını puanlar                       | Yapı analiz skoru üretir                          |
 
 ---
 
@@ -104,15 +123,6 @@ Every execution is logged in `project_log.txt`. You’ll see:
 
 ---
 
-## 🌍 Why Flutter MCP Server?
-
-> Flutter is fast, but repetitive.  
-> Flutter MCP Server automates boilerplate and **teaches while coding.**
-
-Build faster, smarter, and cleaner Flutter code – with guidance on every step.
-
----
-
 ## 📄 License
 
 MIT License – Free for commercial and educational use.
@@ -121,24 +131,7 @@ MIT License – Free for commercial and educational use.
 
 ## ✨ Roadmap
 
-- [ ] VS Code extension for one-click actions  
-- [ ] Dart/Flutter CLI SDK  
-- [ ] Web playground UI  
-- [ ] Customizable prompt system
-
----
-
-## 🙌 Contributing
-
-Pull requests are welcome.  
-To add a new MCP command, create a new Handler + Service combo and open an issue.
-
----
-
-## 🔍 Keywords / Anahtar Kelimeler
-
-`flutter mcp server`, `ai flutter tools`, `flutter codegen`, `dotnet flutter assistant`, `flutter modular backend`, `flutter refactor`, `bloc test generator`
-
----
-
-🔥 Powered by .NET • Designed for Flutter
+- [ ] VS Code extension  
+- [ ] Dart SDK / CLI client  
+- [ ] Web playground  
+- [ ] Custom prompt templating
