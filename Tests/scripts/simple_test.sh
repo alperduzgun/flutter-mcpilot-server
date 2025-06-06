@@ -13,20 +13,20 @@ fi
 
 echo ""
 echo "3. Checking for existing test file:"
-if [ -f "/tmp/test_flutter_widget.dart" ]; then
+if [ -f "/tmp/../json/test_flutter_widget.dart" ]; then
     echo "✅ Test file already exists, removing it..."
-    rm -f /tmp/test_flutter_widget.dart
+    rm -f /tmp/../json/test_flutter_widget.dart
 else
     echo "ℹ️  No existing test file found"
 fi
 
 echo ""
 echo "4. Manual test instructions:"
-echo "   - Open test_filewriter.http in VS Code"
+echo "   - Open ../json/test_filewriter.http in VS Code"
 echo "   - Use 'Send Request' button above each HTTP request"
 echo "   - First test the GET request to check server health"
 echo "   - Then test the POST request to create a file"
-echo "   - Check if file is created with: ls -la /tmp/test_flutter_widget.dart"
+echo "   - Check if file is created with: ls -la /tmp/../json/test_flutter_widget.dart"
 
 echo ""
 echo "5. Current server processes:"

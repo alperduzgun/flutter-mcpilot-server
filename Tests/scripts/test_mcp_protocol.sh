@@ -20,7 +20,7 @@ echo "📋 Test 3: JSON-RPC Capabilities"
 echo "curl -X POST http://localhost:5171/api/command/jsonrpc"
 curl -X POST http://localhost:5171/api/command/jsonrpc \
   -H "Content-Type: application/json" \
-  -d @test_mcp_capabilities.json
+  -d @../json/test_mcp_capabilities.json
 echo -e "\n"
 
 # Test 4: JSON-RPC Command Execution
@@ -28,7 +28,7 @@ echo "📋 Test 4: JSON-RPC Command Execution (checkFlutterVersion)"
 echo "curl -X POST http://localhost:5171/api/command/jsonrpc"
 curl -X POST http://localhost:5171/api/command/jsonrpc \
   -H "Content-Type: application/json" \
-  -d @test_mcp_jsonrpc.json
+  -d @../json/test_mcp_jsonrpc.json
 echo -e "\n"
 
 echo "✅ MCP Protocol Layer tests completed!"

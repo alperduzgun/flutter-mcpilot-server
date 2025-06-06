@@ -52,9 +52,9 @@
       "command": "curl",
       "args": [
         "-X", "POST",
-        "http://localhost:5000/api/command/execute",
+        "http://localhost:5171/api/command/execute",
         "-H", "Content-Type: application/json",
-        "-d", "@test_checkflutter.json"
+        "-d", "@Tests/json/test_checkflutter.json"
       ],
       "group": "test",
       "presentation": {

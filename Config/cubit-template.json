@@ -1,8 +1,10 @@
 {
-  "templates": {
+  "cubitTemplates": {
     "basicCubit": {
       "name": "Basic Cubit",
-      "description": "Simple Cubit with initial state",
+      "description": "Simple Cubit with initial, loading, loaded and error states",
+      "dependencies": ["bloc", "flutter_bloc", "equatable"],
+      "devDependencies": ["bloc_test", "mocktail"],
       "files": {
         "cubit": "{{cubitNameSnake}}_cubit.dart",
         "state": "{{cubitNameSnake}}_state.dart"
@@ -13,23 +15,38 @@
     "entityCubit": {
       "name": "Entity Cubit with CRUD",
       "description": "Cubit for managing entity with CRUD operations",
+      "dependencies": ["bloc", "flutter_bloc", "equatable"],
       "files": {
         "cubit": "{{cubitNameSnake}}_cubit.dart",
         "state": "{{cubitNameSnake}}_state.dart"
       },
-      "cubitTemplate": "import 'package:bloc/bloc.dart';\nimport 'package:equatable/equatable.dart';\n\npart '{{cubitNameSnake}}_state.dart';\n\nclass {{cubitName}}Cubit extends Cubit<{{cubitName}}State> {\n  {{cubitName}}Cubit() : super({{cubitName}}Initial());\n\n  void load{{cubitName}}List() async {\n    emit({{cubitName}}Loading());\n    try {\n      // TODO: Implement repository call\n      // final items = await repository.getAll();\n      emit({{cubitName}}Loaded(items: []));\n    } catch (e) {\n      emit({{cubitName}}Error(e.toString()));\n    }\n  }\n\n  void create{{cubitName}}({{entityType}} item) async {\n    emit({{cubitName}}Creating());\n    try {\n      // TODO: Implement repository call\n      // await repository.create(item);\n      load{{cubitName}}List();\n    } catch (e) {\n      emit({{cubitName}}Error(e.toString()));\n    }\n  }\n\n  void update{{cubitName}}({{entityType}} item) async {\n    emit({{cubitName}}Updating());\n    try {\n      // TODO: Implement repository call  \n      // await repository.update(item);\n      load{{cubitName}}List();\n    } catch (e) {\n      emit({{cubitName}}Error(e.toString()));\n    }\n  }\n\n  void delete{{cubitName}}(String id) async {\n    emit({{cubitName}}Deleting());\n    try {\n      // TODO: Implement repository call\n      // await repository.delete(id);\n      load{{cubitName}}List();\n    } catch (e) {\n      emit({{cubitName}}Error(e.toString()));\n    }\n  }\n}",
-      "stateTemplate": "part of '{{cubitNameSnake}}_cubit.dart';\n\nabstract class {{cubitName}}State extends Equatable {\n  const {{cubitName}}State();\n\n  @override\n  List<Object> get props => [];\n}\n\nclass {{cubitName}}Initial extends {{cubitName}}State {}\n\nclass {{cubitName}}Loading extends {{cubitName}}State {}\n\nclass {{cubitName}}Loaded extends {{cubitName}}State {\n  final List<{{entityType}}> items;\n\n  const {{cubitName}}Loaded({required this.items});\n\n  @override\n  List<Object> get props => [items];\n}\n\nclass {{cubitName}}Creating extends {{cubitName}}State {}\n\nclass {{cubitName}}Updating extends {{cubitName}}State {}\n\nclass {{cubitName}}Deleting extends {{cubitName}}State {}\n\nclass {{cubitName}}Error extends {{cubitName}}State {\n  final String message;\n\n  const {{cubitName}}Error(this.message);\n\n  @override\n  List<Object> get props => [message];\n}"
+      "cubitTemplate": "import 'package:bloc/bloc.dart';\nimport 'package:equatable/equatable.dart';\n\npart '{{cubitNameSnake}}_state.dart';\n\nclass {{cubitName}}Cubit extends Cubit<{{cubitName}}State> {\n  {{cubitName}}Cubit() : super({{cubitName}}Initial());\n\n  void load{{cubitName}}List() async {\n    emit({{cubitName}}Loading());\n    try {\n      // TODO: Implement repository call\n      // final items = await repository.getAll();\n      emit({{cubitName}}Loaded(items: []));\n    } catch (e) {\n      emit({{cubitName}}Error(e.toString()));\n    }\n  }\n\n  void create{{cubitName}}({{entityType}} item) async {\n    emit({{cubitName}}Creating());\n    try {\n      // TODO: Implement repository call\n      // await repository.create(item);\n      load{{cubitName}}List();\n    } catch (e) {\n      emit({{cubitName}}Error(e.toString()));\n    }\n  }\n}",
+      "stateTemplate": "part of '{{cubitNameSnake}}_cubit.dart';\n\nabstract class {{cubitName}}State extends Equatable {\n  const {{cubitName}}State();\n\n  @override\n  List<Object> get props => [];\n}\n\nclass {{cubitName}}Initial extends {{cubitName}}State {}\n\nclass {{cubitName}}Loading extends {{cubitName}}State {}\n\nclass {{cubitName}}Loaded extends {{cubitName}}State {\n  final List<{{entityType}}> items;\n\n  const {{cubitName}}Loaded({required this.items});\n\n  @override\n  List<Object> get props => [items];\n}\n\nclass {{cubitName}}Creating extends {{cubitName}}State {}\n\nclass {{cubitName}}Error extends {{cubitName}}State {\n  final String message;\n\n  const {{cubitName}}Error(this.message);\n\n  @override\n  List<Object> get props => [message];\n}"
     },
     "asyncCubit": {
       "name": "Async Operation Cubit",
       "description": "Cubit for handling async operations with loading states",
+      "dependencies": ["bloc", "flutter_bloc", "equatable"],
       "files": {
         "cubit": "{{cubitNameSnake}}_cubit.dart",
         "state": "{{cubitNameSnake}}_state.dart"
       },
-      "cubitTemplate": "import 'package:bloc/bloc.dart';\nimport 'package:equatable/equatable.dart';\n\npart '{{cubitNameSnake}}_state.dart';\n\nclass {{cubitName}}Cubit extends Cubit<{{cubitName}}State> {\n  {{cubitName}}Cubit() : super(const {{cubitName}}State());\n\n  void perform{{operationName}}() async {\n    emit(state.copyWith(isLoading: true, error: null));\n    try {\n      // TODO: Implement async operation\n      await Future.delayed(const Duration(seconds: 2));\n      emit(state.copyWith(\n        isLoading: false,\n        isSuccess: true,\n        data: 'Operation completed',\n      ));\n    } catch (e) {\n      emit(state.copyWith(\n        isLoading: false,\n        error: e.toString(),\n      ));\n    }\n  }\n\n  void reset() {\n    emit(const {{cubitName}}State());\n  }\n}",
+      "cubitTemplate": "import 'package:bloc/bloc.dart';\nimport 'package:equatable/equatable.dart';\n\npart '{{cubitNameSnake}}_state.dart';\n\nclass {{cubitName}}Cubit extends Cubit<{{cubitName}}State> {\n  {{cubitName}}Cubit() : super(const {{cubitName}}State());\n\n  void performOperation() async {\n    emit(state.copyWith(isLoading: true, error: null));\n    try {\n      // TODO: Implement async operation\n      await Future.delayed(const Duration(seconds: 2));\n      emit(state.copyWith(\n        isLoading: false,\n        isSuccess: true,\n        data: 'Operation completed'\n      ));\n    } catch (e) {\n      emit(state.copyWith(\n        isLoading: false,\n        error: e.toString()\n      ));\n    }\n  }\n\n  void reset() {\n    emit(const {{cubitName}}State());\n  }\n}",
       "stateTemplate": "part of '{{cubitNameSnake}}_cubit.dart';\n\nclass {{cubitName}}State extends Equatable {\n  final bool isLoading;\n  final bool isSuccess;\n  final String? data;\n  final String? error;\n\n  const {{cubitName}}State({\n    this.isLoading = false,\n    this.isSuccess = false,\n    this.data,\n    this.error,\n  });\n\n  {{cubitName}}State copyWith({\n    bool? isLoading,\n    bool? isSuccess,\n    String? data,\n    String? error,\n  }) {\n    return {{cubitName}}State(\n      isLoading: isLoading ?? this.isLoading,\n      isSuccess: isSuccess ?? this.isSuccess,\n      data: data ?? this.data,\n      error: error,\n    );\n  }\n\n  @override\n  List<Object?> get props => [isLoading, isSuccess, data, error];\n}"
     }
   },
-  "dependencies": {
-    "required": [\n      \"bloc\",\n      \"flutter_bloc\",\n      \"equatable\"\n    ],\n    \"optional\": [\n      \"bloc_test\",\n      \"mocktail\"\n    ]\n  },\n  \"testTemplate\": {\n    \"fileName\": \"{{cubitNameSnake}}_cubit_test.dart\",\n    \"template\": \"import 'package:bloc_test/bloc_test.dart';\nimport 'package:flutter_test/flutter_test.dart';\nimport 'package:mocktail/mocktail.dart';\n\nimport '../lib/{{cubitNameSnake}}_cubit.dart';\n\nvoid main() {\n  group('{{cubitName}}Cubit', () {\n    late {{cubitName}}Cubit cubit;\n\n    setUp(() {\n      cubit = {{cubitName}}Cubit();\n    });\n\n    tearDown(() {\n      cubit.close();\n    });\n\n    test('initial state is correct', () {\n      expect(cubit.state, equals({{cubitName}}Initial()));\n    });\n\n    blocTest<{{cubitName}}Cubit, {{cubitName}}State>(\n      'emits loading and loaded states when load{{cubitName}} is called',\n      build: () => cubit,\n      act: (cubit) => cubit.load{{cubitName}}(),\n      expect: () => [\n        {{cubitName}}Loading(),\n        {{cubitName}}Loaded(),\n      ],\n    );\n\n    blocTest<{{cubitName}}Cubit, {{cubitName}}State>(\n      'emits initial state when reset is called',\n      build: () => cubit,\n      act: (cubit) => cubit.reset(),\n      expect: () => [{{cubitName}}Initial()],\n    );\n  });\n}\"\n  },\n  \"namingConventions\": {\n    \"cubitName\": \"PascalCase (e.g., UserProfile)\",\n    \"fileName\": \"snake_case (e.g., user_profile_cubit.dart)\",\n    \"stateName\": \"PascalCase + State (e.g., UserProfileState)\"\n  }\n}"
+  "testTemplate": {
+    "fileName": "{{cubitNameSnake}}_cubit_test.dart",
+    "template": "import 'package:bloc_test/bloc_test.dart';\nimport 'package:flutter_test/flutter_test.dart';\n\nimport '../lib/{{cubitNameSnake}}_cubit.dart';\n\nvoid main() {\n  group('{{cubitName}}Cubit', () {\n    late {{cubitName}}Cubit cubit;\n\n    setUp(() {\n      cubit = {{cubitName}}Cubit();\n    });\n\n    tearDown(() {\n      cubit.close();\n    });\n\n    test('initial state is correct', () {\n      expect(cubit.state, equals({{cubitName}}Initial()));\n    });\n\n    blocTest<{{cubitName}}Cubit, {{cubitName}}State>(\n      'emits loading and loaded states when load{{cubitName}} is called',\n      build: () => cubit,\n      act: (cubit) => cubit.load{{cubitName}}(),\n      expect: () => [{{cubitName}}Loading(), {{cubitName}}Loaded()],\n    );\n  });\n}"
+  },
+  "namingConventions": {
+    "cubitName": "PascalCase (e.g., UserProfile)",
+    "fileName": "snake_case (e.g., user_profile_cubit.dart)",
+    "stateName": "PascalCase + State (e.g., UserProfileState)"
+  },
+  "placeholders": {
+    "{{cubitName}}": "Cubit class name in PascalCase",
+    "{{cubitNameSnake}}": "Cubit name in snake_case for file names",
+    "{{entityType}}": "Entity type for CRUD operations"
+  }
+}

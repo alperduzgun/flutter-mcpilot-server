@@ -5,7 +5,7 @@ echo "Date: $(date)"
 echo
 
 # Function to test endpoint
-test_endpoint() {
+../json/test_endpoint() {
     local method=$1
     local url=$2
     local data=$3
@@ -35,13 +35,13 @@ echo "Waiting for server to be ready..."
 sleep 5
 
 # Test 1: Health check
-test_endpoint "GET" "http://localhost:5171/" "" "Health Check Endpoint"
+../json/test_endpoint "GET" "http://localhost:5171/" "" "Health Check Endpoint"
 
 # Test 2: FileWriter service
 filewriter_data='{
   "command": "writeFile",
   "params": {
-    "filePath": "/tmp/test_flutter_widget.dart",
+    "filePath": "/tmp/../json/test_flutter_widget.dart",
     "content": "import '\''package:flutter/material.dart'\'';\n\nclass TestWidget extends StatelessWidget {\n  const TestWidget({Key? key}) : super(key: key);\n\n  @override\n  Widget build(BuildContext context) {\n    return Container(\n      child: Text('\''Hello Flutter MCP!'\''),\n    );\n  }\n}",
     "createDirectories": true,
     "overwrite": true,
@@ -52,15 +52,15 @@ filewriter_data='{
   "timestamp": "2025-06-06T02:00:00Z"
 }'
 
-test_endpoint "POST" "http://localhost:5171/api/command/execute" "$filewriter_data" "FileWriter Service"
+../json/test_endpoint "POST" "http://localhost:5171/api/command/execute" "$filewriter_data" "FileWriter Service"
 
 # Test 3: Check if file was created
 echo "Checking if file was created..."
-if [ -f "/tmp/test_flutter_widget.dart" ]; then
+if [ -f "/tmp/../json/test_flutter_widget.dart" ]; then
     echo "✅ SUCCESS: File was created!"
-    echo "File size: $(wc -c < /tmp/test_flutter_widget.dart) bytes"
+    echo "File size: $(wc -c < /tmp/../json/test_flutter_widget.dart) bytes"
     echo "First 100 characters:"
-    head -c 100 /tmp/test_flutter_widget.dart
+    head -c 100 /tmp/../json/test_flutter_widget.dart
     echo
     echo "..."
 else
